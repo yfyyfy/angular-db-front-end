@@ -66,7 +66,7 @@ export class HeroDB {
     var heroes: Hero[] = [];
 
     for (let result of results.values) {
-      var obj: {id: number; name: string;} = {id: undefined, name: undefined};
+      var obj = {};
       for (let i in result) {
         obj[results.columns[i]] = result[i];
       }

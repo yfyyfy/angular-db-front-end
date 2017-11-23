@@ -1,9 +1,14 @@
 export class Hero {
-  id: number;
-  name: string;
+  id?: number;
+  name?: string;
 
- constructor(obj: {id: number; name: string;}) {
-   this.id = obj.id;
-   this.name = obj.name;
+  constructor(obj: Hero = {} as Hero) {
+    let {
+      id = 0,
+      name = '',
+    } = obj;
+
+    this.id = id;
+    this.name = name;
  }
 }
