@@ -3,7 +3,7 @@ import { BrowserModule }  from '@angular/platform-browser';
 import { FormsModule }    from '@angular/forms';
 
 import { AppComponent }         from './app.component';
-import { HeroDetailComponent }  from './hero-detail/hero-detail.component';
+import { DetailComponent }      from './detail/detail.component';
 import { HeroesComponent }      from './heroes/heroes.component';
 import { HeroService }          from './hero.service';
 import { MessageService }       from './message.service';
@@ -20,7 +20,7 @@ import { AppRoutingModule }     from './app-routing.module';
   declarations: [
     AppComponent,
     HeroesComponent,
-    HeroDetailComponent,
+    DetailComponent,
     MessagesComponent
   ],
   providers: [ HeroService, MessageService ],
