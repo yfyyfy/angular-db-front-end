@@ -3,6 +3,10 @@
     set PATH=%PATH%;node_modules\.bin\
     npm install
 
+## Additional configuration
+    npm install --save @types/sql.js
+    curl -O https://raw.githubusercontent.com/kripken/sql.js/master/js/sql.js
+
 ## Start server (and open in a browser)
     ng serve --open
 
