@@ -1,13 +1,13 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SearchResultsComponent }      from './search-results/search-results.component';
-import { DetailComponent }      from './detail/detail.component';
+import { DetailComponent } from './detail/detail.component';
+import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/heroes', pathMatch: 'full' },
+  { path: '', redirectTo: '/search', pathMatch: 'full' },
   { path: 'detail/:id', component: DetailComponent },
-  { path: 'heroes', component: SearchResultsComponent }
+  { path: 'search', component: SearchComponent }
 ];
 
 @NgModule({
