@@ -6,11 +6,11 @@ import { HeroService } from '../hero.service';
 import { QueryService } from '../query.service';
 
 @Component({
-  selector: 'app-heroes',
-  templateUrl: './heroes.component.html',
-  styleUrls: ['./heroes.component.css']
+  selector: 'app-search-results',
+  templateUrl: './search-results.component.html',
+  styleUrls: ['./search-results.component.css']
 })
-export class HeroesComponent implements OnInit {
+export class SearchResultsComponent implements OnInit {
   heroes: Hero[];
 
   private subscriber: Subscription;
