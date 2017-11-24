@@ -1,16 +1,25 @@
 <h2>Search results</h2>
-
 <div *ngIf="heroes.length == 0; then c1 else c2"></div>
+
 <ng-template #c1>
   <p>No record found.</p>
 </ng-template>
 
 <ng-template #c2>
-  <ul class="heroes">
-    <li *ngFor="let hero of heroes">
-      <a routerLink="/detail/{{hero.id}}">
-        <span class="badge">{{hero.id}}</span> {{hero.name}}
-      </a>
-    </li>
-  </ul>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Country</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let hero of heroes">
+        <td><a routerLink="/detail/{{hero.id}}">{{hero.id}}</a></td>
+        <td><a routerLink="/detail/{{hero.id}}">{{hero.name}}</a></td>
+        <td><a routerLink="/detail/{{hero.id}}">{{hero.country}}</a></td>
+      </tr>
+    </tbody>
+  </table>
 </ng-template>
