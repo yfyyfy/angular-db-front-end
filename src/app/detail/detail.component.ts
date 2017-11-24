@@ -20,12 +20,12 @@ export class DetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getHero();
+    this.get();
   }
 
-  getHero(): void {
+  get(): void {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.heroService.getHero(id)
+    this.heroService.get(id)
       .subscribe(hero => this.hero = hero);
   }
 
