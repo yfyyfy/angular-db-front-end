@@ -1,9 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { Hero }         from '../hero';
 import { HeroService }  from '../hero.service';
+
+enum Mode {add, edit, view};
 
 @Component({
   selector: 'app-detail',
@@ -12,12 +14,12 @@ import { HeroService }  from '../hero.service';
 })
 export class DetailComponent implements OnInit {
   @Input() hero: Hero;
-  @Input() editMode: boolean;
+  @Input() mode: Mode;
 
   constructor(
-    private route: ActivatedRoute,
     private heroService: HeroService,
-    private location: Location
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -26,24 +28,51 @@ export class DetailComponent implements OnInit {
       this.edit();
     } else if (mode === 'view') {
       this.view();
+    } else if (mode === 'add') {
+      this.add();
     } else {
       // Todo: error
     }
   }
 
+  isAdd(): boolean {
+    return this.mode === Mode.add;
+  }
+
+  isEdit(): boolean {
+    return this.mode === Mode.edit;
+  }
+
+  isView(): boolean {
+    return this.mode === Mode.view;
+  }
+
+  add(): void {
+    this.hero = new Hero();
+    this.mode = Mode.add;
+  }
+
   edit(): void {
     this.get();
-    this.editMode = true;
+    this.mode = Mode.edit;
   }
 
   view(): void {
     this.get();
-    this.editMode = false;
+    this.mode = Mode.view;
   }
 
   save(): void {
-    this.heroService.update(this.hero)
-      .subscribe(updated => {if (updated) {this.view();} else {alert('Update failed.');}});
+    if (this.isEdit()) {
+      this.heroService.update(this.hero)
+        .subscribe(updated => {if (updated) {this.view();} else {alert('Update failed.');}});
+    } else if (this.isAdd()) {
+      this.heroService.insert(this.hero)
+        .subscribe(inserted => {if (inserted) {this.router.navigate(['']);} else {alert('Insert failed.');}});
+    } else {
+      // Todo: error.
+      console.log('not implemented');
+    }
   }
 
   get(): void {

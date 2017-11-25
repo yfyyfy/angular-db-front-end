@@ -56,6 +56,35 @@ export class HeroDB {
     return this.queryResults2objArray(results[0]);
   }
 
+  public insert(hero?: Hero): boolean {
+    var insertStatement = 'INSERT into hero';
+
+    var keys: string[] = [];
+    var values: string[] = [];
+    if (hero.name != null) {
+      keys.push('name');
+      values.push(`"${hero.name}"`);
+    }
+    if (hero.country != null) {
+      keys.push('country');
+      values.push(`"${hero.country}"`);
+    }
+
+    if (keys.length == 0) {return false;}
+
+    insertStatement += ' ( ' + keys.join(',') + ' ) ';
+    insertStatement += ' VALUES ( ' + values.join(',') + ' ) ';
+
+    try {
+      this.db.run(insertStatement);
+    } catch (e) {
+      console.warn(e);
+      return false;
+    }
+
+    return true;
+  }
+
   public update(hero?: Hero): boolean {
     var updateStatement = 'UPDATE hero';
 
