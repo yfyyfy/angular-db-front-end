@@ -2,9 +2,10 @@
   <h2>{{ hero.name | uppercase }} Details</h2>
   <div><span>id: </span>{{hero.id}}</div>
 
-  <app-input-onedit [editMode]="true" [model]="hero" [label]="'name'" [property]="'name'" [placeholder]="'name'"></app-input-onedit>
-  <app-input-onedit [editMode]="true" [model]="hero" [label]="'country'" [property]="'country'" [placeholder]="'country'"></app-input-onedit>
+  <app-input-onedit [editMode]="editMode" [model]="hero" [label]="'name'" [property]="'name'" [placeholder]="'name'"></app-input-onedit>
+  <app-input-onedit [editMode]="editMode" [model]="hero" [label]="'country'" [property]="'country'" [placeholder]="'country'"></app-input-onedit>
 
-  <button (click)="goBack()">go back</button>
-  <button (click)="save()">save</button>
+  <button *ngIf="!editMode" (click)="edit()">edit</button>
+  <button *ngIf="editMode" (click)="save()">save</button>
+  <button *ngIf="editMode" (click)="view()">cancel</button>
 </div>

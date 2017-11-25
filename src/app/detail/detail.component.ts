@@ -12,6 +12,7 @@ import { HeroService }  from '../hero.service';
 })
 export class DetailComponent implements OnInit {
   @Input() hero: Hero;
+  @Input() editMode: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -20,21 +21,34 @@ export class DetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const mode = this.route.snapshot.paramMap.get('mode');
+    if (mode === 'edit') {
+      this.edit();
+    } else if (mode === 'view') {
+      this.view();
+    } else {
+      // Todo: error
+    }
+  }
+
+  edit(): void {
     this.get();
+    this.editMode = true;
+  }
+
+  view(): void {
+    this.get();
+    this.editMode = false;
+  }
+
+  save(): void {
+    this.heroService.update(this.hero)
+      .subscribe(updated => {if (updated) {this.view();} else {alert('Update failed.');}});
   }
 
   get(): void {
     const id = +this.route.snapshot.paramMap.get('id');
     this.heroService.get(id)
       .subscribe(hero => this.hero = hero);
-  }
-
-  save(): void {
-    this.heroService.update(this.hero)
-      .subscribe(updated => {if (updated) {this.goBack();} else {alert('Update failed.');}});
-  }
-
-  goBack(): void {
-    this.location.back();
   }
 }

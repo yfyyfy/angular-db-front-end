@@ -16,9 +16,9 @@
     </thead>
     <tbody>
       <tr *ngFor="let hero of heroes">
-        <td><a routerLink="/detail/{{hero.id}}">{{hero.id}}</a></td>
-        <td><a routerLink="/detail/{{hero.id}}">{{hero.name}}</a></td>
-        <td><a routerLink="/detail/{{hero.id}}">{{hero.country}}</a></td>
+        <td><a routerLink="/detail/view/{{hero.id}}">{{hero.id}}</a></td>
+        <td><a routerLink="/detail/view/{{hero.id}}">{{hero.name}}</a></td>
+        <td><a routerLink="/detail/view/{{hero.id}}">{{hero.country}}</a></td>
       </tr>
     </tbody>
   </table>
