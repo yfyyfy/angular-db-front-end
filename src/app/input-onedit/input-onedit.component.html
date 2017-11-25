@@ -1,0 +1,6 @@
+<div>
+  <label>{{label}}:
+    <input *ngIf="editMode" [(ngModel)]="model[property]" placeholder="{{placeholder}}"/>
+    <span *ngIf="!editMode">{{model[property]}}</span>
+  </label>
+</div>

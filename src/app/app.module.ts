@@ -4,6 +4,7 @@ import { FormsModule }    from '@angular/forms';
 
 import { AppComponent }           from './app.component';
 import { DetailComponent }        from './detail/detail.component';
+import { InputOneditComponent }   from './input-onedit/input-onedit.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { SearchFormComponent }    from './search-form/search-form.component';
 import { MessagesComponent }      from './messages/messages.component';
@@ -24,6 +25,7 @@ import { AppRoutingModule }       from './app-routing.module';
   declarations: [
     AppComponent,
     DetailComponent,
+    InputOneditComponent,
     MessagesComponent,
     SearchComponent,
     SearchFormComponent,
