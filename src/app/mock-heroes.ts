@@ -111,6 +111,19 @@ export class HeroDB {
     return true;
   }
 
+  public delete(hero?: Hero): boolean {
+    var deleteStatement = `DELETE FROM hero WHERE id = ${hero.id};`;
+
+    try {
+      this.db.run(deleteStatement);
+    } catch (e) {
+      console.warn(e);
+      return false;
+    }
+
+    return true;
+  }
+
   private queryResults2objArray(results: SQL.QueryResults): Hero[] {
     var heroes: Hero[] = [];
 

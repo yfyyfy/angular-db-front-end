@@ -62,6 +62,11 @@ export class DetailComponent implements OnInit {
     this.mode = Mode.view;
   }
 
+  delete(): void {
+    this.heroService.delete(this.hero)
+      .subscribe(deleted => {if (deleted) {this.router.navigate(['']);} else {alert('Delete failed.');}});
+  }
+
   save(): void {
     if (this.isEdit()) {
       this.heroService.update(this.hero)

@@ -8,6 +8,7 @@
   <app-input-onedit [editMode]="isEdit() || isAdd()" [model]="hero" [label]="'country'" [property]="'country'" [placeholder]="'country'"></app-input-onedit>
 
   <button *ngIf="isView()" (click)="edit()">edit</button>
+  <button *ngIf="isView()" (click)="delete()">delete</button>
   <button *ngIf="isEdit()" (click)="save()">save</button>
   <button *ngIf="isEdit()" (click)="view()">cancel</button>
   <button *ngIf="isAdd()" (click)="save()">save</button>

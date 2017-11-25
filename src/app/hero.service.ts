@@ -36,4 +36,9 @@ export class HeroService {
     this.messageService.add(`HeroService: updated hero id=${hero.id}`);
     return of(this.heroDB.update(hero));
   }
+
+  public delete(hero: Hero): Observable<any> {
+    this.messageService.add(`HeroService: deleted hero id=${hero.id}`);
+    return of(this.heroDB.delete(hero));
+  }
 }
