@@ -2,6 +2,8 @@ import { NgModule }       from '@angular/core';
 import { BrowserModule }  from '@angular/platform-browser';
 import { FormsModule }    from '@angular/forms';
 
+import { MultiselectDropdownModule } from 'ng2-multiselect';
+
 import { AppComponent }           from './app.component';
 import { DetailComponent }        from './detail/detail.component';
 import { InputOneditComponent }   from './input-onedit/input-onedit.component';
@@ -20,6 +22,7 @@ import { AppRoutingModule }       from './app-routing.module';
   imports: [
     BrowserModule,
     FormsModule,
+    MultiselectDropdownModule,
     AppRoutingModule
   ],
   declarations: [

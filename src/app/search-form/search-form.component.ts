@@ -1,6 +1,8 @@
 import { Component, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
+import { IMultiSelectOption,IMultiSelectSettings } from 'ng2-multiselect';
+
 import { Query }    from '../query';
 import { QueryService } from '../query.service'
 
@@ -12,8 +14,17 @@ import { QueryService } from '../query.service'
 export class SearchFormComponent {
   @ViewChild('searchForm') searchForm: NgForm;
 
-  countries = ['US', 'UK', 'JP'];
-  modelCountry: string = undefined;
+  countries: any[] = [
+    { country: 'US'},
+    { country: 'UK'}
+  ];
+
+  countriesSettings: IMultiSelectSettings = {
+    keyToSelect: 'country',
+    lableToDisplay: 'country',
+    isSimpleArray: false
+  };
+
   model = new Query({name: '', country: []});
   submitted = false;
 
@@ -21,9 +32,6 @@ export class SearchFormComponent {
 
   onSubmit() {
     this.submitted = true;
-    if (this.modelCountry) {
-      this.model.country = [this.modelCountry];
-    }
     this.queryService.publishQuery(this.model);
   }
 

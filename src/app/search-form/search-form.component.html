@@ -8,11 +8,7 @@
 
   <div>
     <label for="country">Country</label>
-    <select id="country"
-            [(ngModel)]="modelCountry" name="country"
-            #country="ngModel">
-      <option *ngFor="let country of countries" [value]="country">{{country}}</option>
-    </select>
+    <ng2-multiselect [options]="countries" [settings]="countriesSettings" [(ngModel)]="model.country" name="country"></ng2-multiselect>
   </div>
 
   <button type="submit" [disabled]="!searchForm.form.valid">Submit</button>
