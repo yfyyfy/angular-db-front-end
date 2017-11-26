@@ -45,7 +45,6 @@ export class HeroDB {
       if (query.country && query.country.length > 0) {
         let countryWheres: string[] = [];
         for (let country of query.country) {
-          if (country == null) {continue;}
           countryWheres.push(`country = "${country}"`);
         }
         if (countryWheres.length > 0) {
@@ -55,7 +54,6 @@ export class HeroDB {
       if (query.activeDuty && query.activeDuty.length > 0) {
         let activeDutyWheres: string[] = [];
         for (let activeDuty of query.activeDuty) {
-          if (activeDuty == null) {continue;}
           activeDutyWheres.push(`activeDuty = ${+activeDuty}`);
         }
         if (activeDutyWheres.length > 0) {

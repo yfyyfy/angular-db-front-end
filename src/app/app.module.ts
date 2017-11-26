@@ -11,6 +11,7 @@ import { DetailComponent }           from './detail/detail.component';
 import { InputOneditComponent }      from './input-onedit/input-onedit.component';
 import { SearchResultsComponent }    from './search-results/search-results.component';
 import { SearchFormComponent }       from './search-form/search-form.component';
+import { MultiCheckboxComponent }    from './multi-checkbox/multi-checkbox.component';
 import { MessagesComponent }         from './messages/messages.component';
 import { SearchComponent }           from './search/search.component';
 
@@ -30,13 +31,14 @@ import { AppRoutingModule }          from './app-routing.module';
   ],
   declarations: [
     AppComponent,
+    CheckboxOneditComponent,
     DetailComponent,
     InputOneditComponent,
     MessagesComponent,
+    MultiCheckboxComponent,
     SearchComponent,
     SearchFormComponent,
-    SearchResultsComponent,
-    CheckboxOneditComponent
+    SearchResultsComponent
   ],
   providers: [ HeroService, MessageService, QueryService ],
   bootstrap: [ AppComponent ]

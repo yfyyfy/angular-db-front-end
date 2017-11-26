@@ -9,7 +9,7 @@ export class Query {
       id = 0,
       name = '',
       country = [],
-      activeDuty = [null, null],
+      activeDuty = [],
     } = obj;
 
     this.id = id;

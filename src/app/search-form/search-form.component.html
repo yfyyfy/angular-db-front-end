@@ -18,10 +18,9 @@
 
   <div class="form-group">
     <label class="control-label col-sm-2" for="name">Status</label>
-    <div class="col-sm-4 checkbox">
-      <label><input type="checkbox" name="activeDuty" value=1 (change)="model.activeDuty[0] = $event.target.checked ? 1 * $event.target.value : null">active duty</label>
-      <label><input type="checkbox" name="retired"    value=0 (change)="model.activeDuty[1] = $event.target.checked ? 1 * $event.target.value : null">retired</label>
-    </div>
+    <app-multi-checkbox  class="col-sm-4 checkbox"
+                         [contents]="{'active duty': 1, 'retired': 0}"
+                         [(ngModel)]="model.activeDuty" name="activeDuty"></app-multi-checkbox>
   </div>
 
   <button type="submit" class="btn btn-primary" [disabled]="!searchForm.form.valid">Submit</button>

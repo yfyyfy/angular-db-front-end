@@ -1,0 +1,5 @@
+<div>
+  <ng-container *ngFor="let key of contentsKeys">
+    <label><input type="checkbox" value={{contents[key]}} (change)="update($event)">{{key}}</label>
+  </ng-container>
+</div>
