@@ -42,4 +42,9 @@ export class HeroService {
     this.messageService.add(`HeroService: deleted hero id=${hero.id}`);
     return of(this.heroDB.delete(hero));
   }
+
+  public getColumnValues(column: string): Observable<any[]> {
+    this.messageService.add(`HeroService: fetched column name=${column}`);
+    return of(this.heroDB.getColumnValues(column));
+  }
 }

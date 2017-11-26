@@ -129,6 +129,13 @@ export class HeroDB {
     return true;
   }
 
+  public getColumnValues(column: string): any[] {
+    var selectStatement = `SELECT DISTINCT ${column} FROM hero;`
+    var results: SQL.QueryResults[] = this.db.exec(selectStatement);
+
+    return results[0].values.map(elt => elt[0]);
+  }
+
   private queryResults2objArray(results: SQL.QueryResults): Hero[] {
     var heroes: Hero[] = [];
 

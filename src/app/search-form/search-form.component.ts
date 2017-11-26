@@ -5,6 +5,7 @@ import { IMultiSelectOption,IMultiSelectSettings } from 'ng2-multiselect';
 
 import { Query }    from '../query';
 import { QueryService } from '../query.service'
+import { HeroService } from '../hero.service'
 
 @Component({
   selector: 'app-search-form',
@@ -14,21 +15,21 @@ import { QueryService } from '../query.service'
 export class SearchFormComponent {
   @ViewChild('searchForm') searchForm: NgForm;
 
-  countries: any[] = [
-    { country: 'US'},
-    { country: 'UK'}
-  ];
-
-  countriesSettings: IMultiSelectSettings = {
-    keyToSelect: 'country',
-    lableToDisplay: 'country',
-    isSimpleArray: false
-  };
+  countries: any[];
+  countriesSettings: IMultiSelectSettings;
 
   model = new Query({name: '', country: []});
   submitted = false;
 
-  constructor(private queryService: QueryService) {}
+  constructor(private heroService: HeroService,
+              private queryService: QueryService) {
+    heroService.getColumnValues('country').subscribe(columnValues => this.countries = columnValues.map(elt => <any>{'country': elt}));
+    this.countriesSettings = {
+      keyToSelect: 'country',
+      lableToDisplay: 'country',
+      isSimpleArray: false
+    };
+  }
 
   onSubmit() {
     this.submitted = true;
