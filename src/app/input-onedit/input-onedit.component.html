@@ -1,9 +1,9 @@
 <div class="form-group">
   <label>{{label}}:
     <div *ngIf="editMode">
-      <input *ngIf=" source" type="text" class="form-control" [(ngModel)]="model[property]" placeholder="{{placeholder}}" auto-complete [source]="source"/>
-      <input *ngIf="!source" type="text" class="form-control" [(ngModel)]="model[property]" placeholder="{{placeholder}}"/>
+      <input *ngIf=" source" type="text" class="form-control" [(ngModel)]="value" placeholder="{{placeholder}}" auto-complete [source]="source"/>
+      <input *ngIf="!source" type="text" class="form-control" [(ngModel)]="value" placeholder="{{placeholder}}"/>
     </div>
-    <div *ngIf="!editMode">{{model[property]}}</div>
+    <div *ngIf="!editMode">{{value}}</div>
   </label>
 </div>
