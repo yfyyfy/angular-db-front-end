@@ -11,6 +11,7 @@ export class InputOneditComponent implements OnInit {
   @Input() property: string;
   @Input() placeholder: string;
   @Input() editMode: boolean;
+  @Input() source: any[];
 
   constructor() { }
 

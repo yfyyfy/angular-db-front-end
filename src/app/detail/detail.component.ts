@@ -16,11 +16,14 @@ export class DetailComponent implements OnInit {
   @Input() hero: Hero;
   @Input() mode: Mode;
 
+  countries: string[];
+
   constructor(
     private heroService: HeroService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router) {
+    heroService.getColumnValues('country').subscribe(columnValues => this.countries = columnValues);
+  }
 
   ngOnInit(): void {
     const mode = this.route.snapshot.paramMap.get('mode');

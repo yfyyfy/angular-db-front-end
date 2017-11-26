@@ -3,6 +3,7 @@ import { BrowserModule }  from '@angular/platform-browser';
 import { FormsModule }    from '@angular/forms';
 
 import { MultiselectDropdownModule } from 'ng2-multiselect';
+import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 
 import { AppComponent }           from './app.component';
 import { DetailComponent }        from './detail/detail.component';
@@ -23,6 +24,7 @@ import { AppRoutingModule }       from './app-routing.module';
     BrowserModule,
     FormsModule,
     MultiselectDropdownModule,
+    NguiAutoCompleteModule,
     AppRoutingModule
   ],
   declarations: [

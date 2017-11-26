@@ -8,6 +8,7 @@
     curl -O https://raw.githubusercontent.com/kripken/sql.js/master/js/sql.js
     # npm install --save ng2-dropdown-multiselect # not working
     npm install --save ng2-multiselect
+    npm install --save @ngui/auto-complete
 
 ## Start server (and open in a browser)
     ng serve --open
