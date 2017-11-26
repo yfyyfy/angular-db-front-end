@@ -4,17 +4,9 @@
   <div *ngIf="!isAdd()"><span>id: </span>{{hero.id}}</div>
   <div *ngIf="isAdd()"><span>id: </span>-</div>
 
-  <app-input-onedit [editMode]="isEdit() || isAdd()" [model]="hero" [label]="'name'" [property]="'name'" [placeholder]="'name'"></app-input-onedit>
-  <app-input-onedit [editMode]="isEdit() || isAdd()" [model]="hero" [label]="'country'" [property]="'country'" [placeholder]="'country'" [source]="countries"></app-input-onedit>
-
-  <div class="form-group">
-    <label>status:
-      <div *ngIf="isEdit() || isAdd()" class="checkbox">
-        <label><input type="checkbox" [(ngModel)]="hero.activeDuty" name="activeDuty">active duty</label>
-      </div>
-      <div *ngIf="isView()">{{hero.activeDuty ? 'active' : 'retired'}}</div>
-    </label>
-  </div>
+  <app-input-onedit    [editMode]="isEdit() || isAdd()" [model]="hero" [label]="'name'"    [property]="'name'"    [placeholder]="'name'"></app-input-onedit>
+  <app-input-onedit    [editMode]="isEdit() || isAdd()" [model]="hero" [label]="'country'" [property]="'country'" [placeholder]="'country'" [source]="countries"></app-input-onedit>
+  <app-checkbox-onedit [editMode]="isEdit() || isAdd()" [model]="hero" [label]="'status'"  [property]="'activeDuty'" [checkboxString]="'active duty'" [checkedString]="'active'" [unCheckedString]="'retired'"></app-checkbox-onedit>
 
   <button class="btn btn-primary" *ngIf="isView()" (click)="edit()">edit</button>
   <button class="btn btn-warning" *ngIf="isView()" (click)="delete()">delete</button>

@@ -1,0 +1,8 @@
+<div class="form-group">
+  <label>{{label}}:
+      <div *ngIf="editMode" class="checkbox">
+        <label><input type="checkbox" [(ngModel)]="model[property]" name="activeDuty">{{checkboxString}}</label>
+      </div>
+      <div *ngIf="!editMode">{{model[property] ? checkedString : unCheckedString}}</div>
+  </label>
+</div>
