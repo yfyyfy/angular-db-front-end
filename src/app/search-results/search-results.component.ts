@@ -13,11 +13,20 @@ import { QueryService } from '../query.service';
 })
 export class SearchResultsComponent implements OnInit {
   heroes: Hero[];
+  columnVisible: boolean[] = [];
 
   private subscriber: Subscription;
 
   constructor(private heroService: HeroService,
               private queryService: QueryService) {}
+
+  hideColumn($event: any): void {
+    let parentNode = $event.target.parentNode;
+    let parentTagName = parentNode.tagName;
+    let parentSiblings = Array.prototype.filter.call(parentNode.parentNode.childNodes, elt => elt.tagName === parentTagName);
+    let index = Array.prototype.indexOf.call(parentSiblings, parentNode);
+    this.columnVisible[index] = false;
+  }
 
   ngOnInit() {
     this.subscriber = this.queryService.query$.subscribe(this.getHeroes.bind(this));

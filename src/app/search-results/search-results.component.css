@@ -1,7 +1,19 @@
 /* SearchResultsComponent's private CSS styles */
 
+thead th:hover {
+  background: #eee;
+}
+
+thead th:not(:hover) span.glyphicon-remove {
+  opacity: 0;
+}
+
 tbody tr {
   cursor: pointer;
+}
+
+th.hide, tr.hide {
+  display:none;
 }
 
 a {

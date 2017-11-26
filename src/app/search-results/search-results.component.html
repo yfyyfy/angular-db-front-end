@@ -9,18 +9,18 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Country</th>
-        <th>Status</th>
+        <th [ngClass]="{'hide': columnVisible.length > 0 && columnVisible[0] === false}">ID<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
+        <th [ngClass]="{'hide': columnVisible.length > 1 && columnVisible[1] === false}">Name<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
+        <th [ngClass]="{'hide': columnVisible.length > 2 && columnVisible[2] === false}">Country<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
+        <th [ngClass]="{'hide': columnVisible.length > 3 && columnVisible[3] === false}">Status<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let hero of heroes">
-        <td onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.id}}</a></td>
-        <td onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.name}}</a></td>
-        <td onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.country}}</a></td>
-        <td onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.activeDuty ? 'active' : 'retired'}}</a></td>
+        <td [ngClass]="{'hide': columnVisible.length > 0 && columnVisible[0] === false}" onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.id}}</a></td>
+        <td [ngClass]="{'hide': columnVisible.length > 1 && columnVisible[1] === false}" onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.name}}</a></td>
+        <td [ngClass]="{'hide': columnVisible.length > 2 && columnVisible[2] === false}" onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.country}}</a></td>
+        <td [ngClass]="{'hide': columnVisible.length > 3 && columnVisible[3] === false}" onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.activeDuty ? 'active' : 'retired'}}</a></td>
       </tr>
     </tbody>
   </table>
