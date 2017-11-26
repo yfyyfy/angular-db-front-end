@@ -1,31 +1,10 @@
 /* SearchResultsComponent's private CSS styles */
-thead tr {
-  background-color: #CCC;
-}
-
-thead th {
-  padding: 0.1em 1em;
-}
 
 tbody tr {
   cursor: pointer;
-  background-color: #EEE;
-}
-
-tbody td {
-  padding: 0.1em 1em;
-}
-
-tbody tr:hover {
-  color: #607D8B;
-  background-color: #DDD;
 }
 
 a {
   color: #888;
   text-decoration: none;
-}
-
-a:hover {
-  color:#607D8B;
 }

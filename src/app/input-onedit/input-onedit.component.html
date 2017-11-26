@@ -1,6 +1,6 @@
-<div>
+<div class="form-group">
   <label>{{label}}:
-    <input *ngIf="editMode" [(ngModel)]="model[property]" placeholder="{{placeholder}}"/>
-    <span *ngIf="!editMode">{{model[property]}}</span>
+    <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="model[property]" placeholder="{{placeholder}}"/>
+    <div *ngIf="!editMode">{{model[property]}}</div>
   </label>
 </div>

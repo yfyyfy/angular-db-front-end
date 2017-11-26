@@ -1,16 +1,21 @@
 <h2>Search form</h2>
-<form (ngSubmit)="onSubmit()" #searchForm="ngForm">
-  <div>
-    <label for="name">Name</label>
-    <input type="text" id="name"
-           [(ngModel)]="model.name" name="name">
+<form class="form-horizontal" (ngSubmit)="onSubmit()" #searchForm="ngForm">
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="name">Name</label>
+    <div class="col-sm-4">
+      <input type="text" id="name" class="form-control"
+             [(ngModel)]="model.name" name="name">
+    </div>
   </div>
 
-  <div>
-    <label for="country">Country</label>
-    <ng2-multiselect [options]="countries" [settings]="countriesSettings" [(ngModel)]="model.country" name="country"></ng2-multiselect>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="country">Country</label>
+    <div class="col-sm-4">
+      <ng2-multiselect [options]="countries" [settings]="countriesSettings"
+                       [(ngModel)]="model.country" name="country"></ng2-multiselect>
+    </div>
   </div>
 
-  <button type="submit" [disabled]="!searchForm.form.valid">Submit</button>
-  <button type="button" (click)="clear();">Clear</button>
+  <button type="submit" class="btn btn-primary" [disabled]="!searchForm.form.valid">Submit</button>
+  <button type="button" class="btn" (click)="clear();">Clear</button>
 </form>

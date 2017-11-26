@@ -6,7 +6,7 @@
 </ng-template>
 
 <ng-template #c2>
-  <table>
+  <table class="table table-hover">
     <thead>
       <tr>
         <th>ID</th>
@@ -16,9 +16,9 @@
     </thead>
     <tbody>
       <tr *ngFor="let hero of heroes">
-        <td><a routerLink="/detail/view/{{hero.id}}">{{hero.id}}</a></td>
-        <td><a routerLink="/detail/view/{{hero.id}}">{{hero.name}}</a></td>
-        <td><a routerLink="/detail/view/{{hero.id}}">{{hero.country}}</a></td>
+        <td onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.id}}</a></td>
+        <td onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.name}}</a></td>
+        <td onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.country}}</a></td>
       </tr>
     </tbody>
   </table>
