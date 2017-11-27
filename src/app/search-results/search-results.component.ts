@@ -12,13 +12,18 @@ import { QueryService } from '../query.service';
   styleUrls: ['./search-results.component.css']
 })
 export class SearchResultsComponent implements OnInit {
+  configVisible: boolean = false;
   heroes: Hero[];
-  columnVisible: boolean[] = [];
+  columnVisible: boolean[] = [true, true, true, true];
 
   private subscriber: Subscription;
 
   constructor(private heroService: HeroService,
               private queryService: QueryService) {}
+
+  toggleConfigVisibility(): void {
+    this.configVisible = !this.configVisible;
+  }
 
   hideColumn($event: any): void {
     let parentNode = $event.target.parentNode;

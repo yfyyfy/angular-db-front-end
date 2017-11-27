@@ -1,4 +1,16 @@
-<h2>Search results</h2>
+<h2>Search results</h2><span class="setting-icon glyphicon glyphicon-cog" (click)="toggleConfigVisibility()"></span>
+<div class="panel panel-default" [hidden]="!configVisible">
+  <div class="panel-heading">
+    <h3 class="panel-title">Column visibility setting</h3><span class="glyphicon glyphicon-remove pull-right" (click)="toggleConfigVisibility()"></span>
+  </div>
+  <div class="row">
+    <div class="col-md-3"><label><input type="checkbox" [(ngModel)]="columnVisible[0]">ID</label></div>
+    <div class="col-md-3"><label><input type="checkbox" [(ngModel)]="columnVisible[1]">Name</label></div>
+    <div class="col-md-3"><label><input type="checkbox" [(ngModel)]="columnVisible[2]">Country</label></div>
+    <div class="col-md-3"><label><input type="checkbox" [(ngModel)]="columnVisible[3]">Status</label></div>
+  </div>
+</div>
+
 <div *ngIf="heroes.length == 0; then c1 else c2"></div>
 
 <ng-template #c1>
@@ -9,18 +21,18 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th [ngClass]="{'hide': columnVisible.length > 0 && columnVisible[0] === false}">ID<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
-        <th [ngClass]="{'hide': columnVisible.length > 1 && columnVisible[1] === false}">Name<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
-        <th [ngClass]="{'hide': columnVisible.length > 2 && columnVisible[2] === false}">Country<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
-        <th [ngClass]="{'hide': columnVisible.length > 3 && columnVisible[3] === false}">Status<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
+        <th [ngClass]="{'hide': columnVisible[0] === false}">ID<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
+        <th [ngClass]="{'hide': columnVisible[1] === false}">Name<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
+        <th [ngClass]="{'hide': columnVisible[2] === false}">Country<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
+        <th [ngClass]="{'hide': columnVisible[3] === false}">Status<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let hero of heroes">
-        <td [ngClass]="{'hide': columnVisible.length > 0 && columnVisible[0] === false}" onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.id}}</a></td>
-        <td [ngClass]="{'hide': columnVisible.length > 1 && columnVisible[1] === false}" onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.name}}</a></td>
-        <td [ngClass]="{'hide': columnVisible.length > 2 && columnVisible[2] === false}" onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.country}}</a></td>
-        <td [ngClass]="{'hide': columnVisible.length > 3 && columnVisible[3] === false}" onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.activeDuty ? 'active' : 'retired'}}</a></td>
+        <td [ngClass]="{'hide': columnVisible[0] === false}" onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.id}}</a></td>
+        <td [ngClass]="{'hide': columnVisible[1] === false}" onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.name}}</a></td>
+        <td [ngClass]="{'hide': columnVisible[2] === false}" onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.country}}</a></td>
+        <td [ngClass]="{'hide': columnVisible[3] === false}" onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.activeDuty ? 'active' : 'retired'}}</a></td>
       </tr>
     </tbody>
   </table>

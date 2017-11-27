@@ -1,5 +1,18 @@
 /* SearchResultsComponent's private CSS styles */
 
+h2, h3 {
+  display: inline-block;
+}
+
+span.setting-icon {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.panel-default .panel-heading .glyphicon {
+  color: #888;
+}
+
 thead th:hover {
   background: #eee;
 }
