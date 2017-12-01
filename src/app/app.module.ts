@@ -12,6 +12,7 @@ import { InputOneditComponent }      from './input-onedit/input-onedit.component
 import { SearchResultsComponent }    from './search-results/search-results.component';
 import { SearchFormComponent }       from './search-form/search-form.component';
 import { MultiCheckboxComponent }    from './multi-checkbox/multi-checkbox.component';
+import { MultiInputOneditComponent } from './multi-input-onedit/multi-input-onedit.component';
 import { MessagesComponent }         from './messages/messages.component';
 import { SearchComponent }           from './search/search.component';
 
@@ -36,6 +37,7 @@ import { AppRoutingModule }          from './app-routing.module';
     InputOneditComponent,
     MessagesComponent,
     MultiCheckboxComponent,
+    MultiInputOneditComponent,
     SearchComponent,
     SearchFormComponent,
     SearchResultsComponent

@@ -2,6 +2,7 @@ export class Hero {
   id?: number;
   name?: string;
   country?: string;
+  languages?: string[];
   activeDuty?: boolean;
 
   constructor(obj: Hero = {} as Hero) {
@@ -9,12 +10,14 @@ export class Hero {
       id = 0,
       name = '',
       country = '',
+      languages = [],
       activeDuty = true,
     } = obj;
 
     this.id = id;
     this.name = name;
     this.country = country;
+    this.languages = languages;
     this.activeDuty = activeDuty;
  }
 }

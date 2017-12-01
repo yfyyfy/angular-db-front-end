@@ -10,24 +10,43 @@ export class HeroDB {
     this.db = new SQL.Database();
 
     // Create a table in memory.
-    var createTableStatement = 'CREATE TABLE hero (id INTEGER PRIMARY KEY, name TEXT, country TEXT, activeDuty BOOLEAN);';
-    this.db.run(createTableStatement);
+    var createTableStatement_h = 'CREATE TABLE hero (id INTEGER PRIMARY KEY, name TEXT, country TEXT, activeDuty BOOLEAN);';
+    var createTableStatement_hl = 'CREATE TABLE hero_language (hero_id INTEGER, id INTEGER, name TEXT, PRIMARY KEY (hero_id, id));';
+    this.db.run(createTableStatement_h);
+    this.db.run(createTableStatement_hl);
 
     // Insert records.
     try {
+      this.db.run('BEGIN TRANSACTION;');
       this.insertToTable('hero', heroObjArray);
+      this.insertToTable('hero_language', heroLanguageObjArray);
+      this.db.run('COMMIT;');
     } catch (e) {
+      this.db.run('ROLLBACK;');
       console.warn(e);
     }
   }
 
   public get(id: number): Hero {
-    var selectStatement = `SELECT * FROM hero where id = ${id};`
-    var results: SQL.QueryResults[] = this.db.exec(selectStatement);
-    var heroes: Hero[] = this.queryResults2objArray(Hero, results[0]);
+    try {
+      this.db.run('BEGIN TRANSACTION;');
+      var selectStatement_h = `SELECT * FROM hero where id = ${id};`
+      var results_h: SQL.QueryResults[] = this.db.exec(selectStatement_h);
+      var selectStatement_hl = `SELECT * FROM hero_language where hero_id = ${id};`
+      var results_hl: SQL.QueryResults[] = this.db.exec(selectStatement_hl);
+      this.db.run('COMMIT;');
+    } catch (e) {
+      this.db.run('ROLLBACK;');
+    }
+    var heroes: Hero[] = this.queryResults2objArray(Hero, results_h[0]);
+    var languages: string[] = this.extractFromQueryResult(results_hl[0], 'name');
+
     if (heroes.length != 1) {
       console.warn('heroes.length != 1');
     }
+
+    heroes[0].languages = languages;
+
     return heroes[0];
   }
 
@@ -63,38 +82,95 @@ export class HeroDB {
       }
     }
 
-    selectStatement += ';'
+    selectStatement += ' ORDER BY id;'
 
-    var results: SQL.QueryResults[] = this.db.exec(selectStatement);
-    return this.queryResults2objArray(Hero, results[0]);
+    try {
+      this.db.run('BEGIN TRANSACTION;');
+      var results: SQL.QueryResults[] = this.db.exec(selectStatement);
+      var ret = this.queryResults2objArray(Hero, results[0]);
+
+      var ids = ret.map(e => e.id);
+      var languages = this.selectIn('hero_language', 'hero_id', ids, ['hero_id', true], ['id', true]);
+      this.db.run('COMMIT;');
+
+      class languageClass {
+        hero_id: number; id: number; name: string;
+        constructor(obj) {
+          this.hero_id = obj.hero_id; this.id = obj.id; this.name = obj.name;
+        }
+      };
+      var languagesObj = this.queryResults2objArray(languageClass, languages[0]);
+
+      {
+        let mainIndex = 0;
+        let subIndex = 0;
+
+        while (subIndex < languagesObj.length) {
+          while (ret[mainIndex].id < languagesObj[subIndex].hero_id) {
+            ++mainIndex;
+          }
+
+          if (ret[mainIndex].id !== languagesObj[subIndex].hero_id) {
+            console.warn('Matching error.');
+            return [];
+          }
+
+          ret[mainIndex].languages.push(languagesObj[subIndex].name);
+          ++subIndex;
+        }
+      }
+
+      return ret;
+    } catch (e) {
+      this.db.run('ROLLBACK;');
+      console.warn(e);
+    }
+    return [];
   }
 
   public insert(hero?: Hero): boolean {
-    var insertStatement = 'INSERT into hero';
-
-    var keys: string[] = [];
-    var values: string[] = [];
-    if (hero.name != null) {
-      keys.push('name');
-      values.push(`"${hero.name}"`);
-    }
-    if (hero.country != null) {
-      keys.push('country');
-      values.push(`"${hero.country}"`);
-    }
-    if (hero.activeDuty != null) {
-      keys.push('activeDuty');
-      values.push(`${hero.activeDuty ? 1 : 0}`);
-    }
-
-    if (keys.length == 0) {return false;}
-
-    insertStatement += ' ( ' + keys.join(',') + ' ) ';
-    insertStatement += ' VALUES ( ' + values.join(',') + ' ) ';
-
     try {
+      this.db.run('BEGIN TRANSACTION;');
+
+      // Get ID.
+      var maxId = this.extractSingleValueFromQueryResult(this.db.exec('SELECT MAX(id) from hero;')[0]);
+      hero.id = Number(maxId) + 1;
+
+      // Construct statements.
+      var insertStatement = 'INSERT into hero';
+
+      var keys: string[] = [];
+      var values: any[] = [];
+      if (hero.id != null) {
+        keys.push('id');
+        values.push(hero.id);
+      }
+      if (hero.name != null) {
+        keys.push('name');
+        values.push(`"${hero.name}"`);
+      }
+      if (hero.country != null) {
+        keys.push('country');
+        values.push(`"${hero.country}"`);
+      }
+      if (hero.activeDuty != null) {
+        keys.push('activeDuty');
+        values.push(`${hero.activeDuty ? 1 : 0}`);
+      }
+
+      if (keys.length == 1) {return false;}
+
+      insertStatement += ' ( ' + keys.join(',') + ' ) ';
+      insertStatement += ' VALUES ( ' + values.join(',') + ' ) ';
+
+      var heroLanguageObjArray = hero.languages.filter(e => e.length > 0).map(function(e,i) {return {hero_id: hero.id, id: i, name: e}});
+
+      // Execute statements.
       this.db.run(insertStatement);
+      this.insertToTable('hero_language', heroLanguageObjArray);
+      this.db.run('COMMIT;');
     } catch (e) {
+      this.db.run('ROLLBACK;');
       console.warn(e);
       return false;
     }
@@ -103,27 +179,35 @@ export class HeroDB {
   }
 
   public update(hero?: Hero): boolean {
-    var updateStatement = 'UPDATE hero';
+    var updateStatement_h = 'UPDATE hero';
 
-    var sets: string[] = [];
+    var sets_h: string[] = [];
     if (hero.name && hero.name.length > 0) {
-      sets.push(`name = "${hero.name}"`);
+      sets_h.push(`name = "${hero.name}"`);
     }
     if (hero.country && hero.country.length > 0) {
-      sets.push(`country = "${hero.country}"`);
+      sets_h.push(`country = "${hero.country}"`);
     }
     if (hero.activeDuty != null) {
-      sets.push(`activeDuty = ${hero.activeDuty ? 1 : 0}`);
+      sets_h.push(`activeDuty = ${hero.activeDuty ? 1 : 0}`);
     }
 
-    if (sets.length == 0) {return false;}
+    if (sets_h.length == 0) {return false;}
 
-    updateStatement += ' SET ' + sets.join(',');
-    updateStatement += ` WHERE id = ${hero.id}`;
+    updateStatement_h += ' SET ' + sets_h.join(',');
+    updateStatement_h += ` WHERE id = ${hero.id}`;
+
+    var deleteStatement_hl = `DELETE FROM hero_language WHERE hero_id = ${hero.id};`;
+    var heroLanguageObjArray = hero.languages.filter(e => e.length > 0).map(function(e,i) {return {hero_id: hero.id, id: i, name: e}});
 
     try {
-      this.db.run(updateStatement);
+      this.db.run('BEGIN TRANSACTION;');
+      this.db.run(updateStatement_h);
+      this.db.run(deleteStatement_hl);
+      this.insertToTable('hero_language', heroLanguageObjArray);
+      this.db.run('COMMIT;');
     } catch (e) {
+      this.db.run('ROLLBACK;');
       console.warn(e);
       return false;
     }
@@ -132,11 +216,16 @@ export class HeroDB {
   }
 
   public delete(hero?: Hero): boolean {
-    var deleteStatement = `DELETE FROM hero WHERE id = ${hero.id};`;
+    var deleteStatement_h = `DELETE FROM hero WHERE id = ${hero.id};`;
+    var deleteStatement_hl = `DELETE FROM hero_language WHERE hero_id = ${hero.id};`;
 
     try {
-      this.db.run(deleteStatement);
+      this.db.run('BEGIN TRANSACTION;');
+      this.db.run(deleteStatement_h);
+      this.db.run(deleteStatement_hl);
+      this.db.run('COMMIT;');
     } catch (e) {
+      this.db.run('ROLLBACK;');
       console.warn(e);
       return false;
     }
@@ -152,6 +241,8 @@ export class HeroDB {
   }
 
   private insertToTable(table: string, keyValues: {}[]): void {
+    if (keyValues.length === 0) {return;}
+
     var columnsArray = keyValues.map(e => Object.keys(e));
     var columns = [...Array.from(new Set([].concat(...columnsArray)))];
 
@@ -169,6 +260,17 @@ export class HeroDB {
     this.db.run(insertStatement, values);
   }
 
+  // orderbys = [[columnName, isASC], ...]
+  private selectIn(table: string, column: string, values: any[], ...orderbys: [string, boolean][]) {
+    var orderby = orderbys.map(e => `${e[0]} ${e[1] ? 'ASC' : 'DESC'}`).join(',');
+    if (orderby.length > 0) {
+      orderby = 'ORDER BY ' + orderby;
+    }
+
+    var selectStatement = `SELECT * FROM ${table} WHERE ${column} IN (${values.join(',')}) ${orderby};`;
+    return this.db.exec(selectStatement);
+  }
+
   private queryResults2objArray<T>(c: new (o: {}) => T, results: SQL.QueryResults): T[] {
     var objects: T[] = [];
     if (!results) {return objects;}
@@ -184,6 +286,19 @@ export class HeroDB {
 
     return objects;
   }
+
+  private extractFromQueryResult(results: SQL.QueryResults, key: string): any[] {
+    if (!results) {return [];}
+
+    var index = results.columns.indexOf(key);
+    if (index < 0) {return []};
+
+    return results.values.map(e => e[index]);
+  }
+
+  private extractSingleValueFromQueryResult(results: SQL.QueryResults): any {
+    return results.values[0][0];
+  }
 }
 
 const heroObjArray: {}[] = [
@@ -197,6 +312,13 @@ const heroObjArray: {}[] = [
   {id: 18, name: 'Dr IQ',     country: 'US', activeDuty: 1},
   {id: 19, name: 'Magma',     country: 'US', activeDuty: 1},
   {id: 20, name: 'Tornado',   country: 'US', activeDuty: 1},
+];
+
+const heroLanguageObjArray: {}[] = [
+  {hero_id: 11, id: 0, name: 'English'},
+  {hero_id: 11, id: 1, name: 'French'},
+  {hero_id: 12, id: 0, name: 'English'},
+  {hero_id: 12, id: 1, name: 'Japanese'},
 ];
 
 export const HERODB: HeroDB = new HeroDB(heroObjArray);
