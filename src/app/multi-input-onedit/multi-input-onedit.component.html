@@ -1,0 +1,13 @@
+<div class="form-group">
+  <label>{{label}}:
+    <div *ngIf="editMode && value !== null">
+      <ng-container *ngFor="let index of range((value ? value.length : 0) + 1)">
+        <input *ngIf=" source" type="text" class="form-control" [(ngModel)]="value[index]" placeholder="{{placeholder}}" auto-complete [source]="source"/>
+        <input *ngIf="!source" type="text" class="form-control" [(ngModel)]="value[index]" placeholder="{{placeholder}}"/>
+      </ng-container>
+    </div>
+    <ng-container *ngIf="!editMode">
+      <div *ngFor="let elt of value">{{elt}}</div>
+    </ng-container>
+  </label>
+</div>
