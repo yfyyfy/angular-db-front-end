@@ -23,12 +23,6 @@ export class HeroDB {
     }
   }
 
-  public getAll(): Hero[] {
-    var selectStatement = 'SELECT * FROM hero;'
-    var results: SQL.QueryResults[] = this.db.exec(selectStatement);
-    return this.queryResults2objArray(results[0]);
-  }
-
   public get(id: number): Hero {
     var selectStatement = `SELECT * FROM hero where id = ${id};`
     var results: SQL.QueryResults[] = this.db.exec(selectStatement);
@@ -37,6 +31,29 @@ export class HeroDB {
       console.warn('heroes.length != 1');
     }
     return heroes[0];
+  }
+
+  public getMulti(query?: Hero): Hero[] {
+    var selectStatement = 'SELECT * FROM hero';
+
+    if (query) {
+      var wheres: string[] = [];
+      if (query.name && query.name.length > 0) {
+        wheres.push(`name LIKE "%${query.name}%"`);
+      }
+      if (query.country && query.country.length > 0) {
+        wheres.push(`country LIKE "%${query.country}%"`);
+      }
+
+      if (wheres.length > 0) {
+        selectStatement += ' WHERE ' + wheres.join(' AND ');
+      }
+    }
+
+    selectStatement += ';'
+
+    var results: SQL.QueryResults[] = this.db.exec(selectStatement);
+    return this.queryResults2objArray(results[0]);
   }
 
   public update(hero?: Hero): boolean {
@@ -67,6 +84,8 @@ export class HeroDB {
 
   private queryResults2objArray(results: SQL.QueryResults): Hero[] {
     var heroes: Hero[] = [];
+
+    if (! results) {return heroes;}
 
     for (let result of results.values) {
       var obj = {};

@@ -7,9 +7,11 @@ import { DetailComponent }      from './detail/detail.component';
 import { HeroesComponent }      from './heroes/heroes.component';
 import { HeroService }          from './hero.service';
 import { MessageService }       from './message.service';
+import { QueryService }       from './query.service';
 import { MessagesComponent }    from './messages/messages.component';
 
 import { AppRoutingModule }     from './app-routing.module';
+import { SearchFormComponent } from './search-form/search-form.component';
 
 @NgModule({
   imports: [
@@ -21,9 +23,10 @@ import { AppRoutingModule }     from './app-routing.module';
     AppComponent,
     HeroesComponent,
     DetailComponent,
-    MessagesComponent
+    MessagesComponent,
+    SearchFormComponent
   ],
-  providers: [ HeroService, MessageService ],
+  providers: [ HeroService, MessageService, QueryService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
