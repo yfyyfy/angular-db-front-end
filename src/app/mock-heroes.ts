@@ -10,12 +10,12 @@ export class HeroDB {
     this.db = new SQL.Database();
 
     // Create a table in memory.
-    var createTableStatement = 'CREATE TABLE hero (id INTEGER PRIMARY KEY, name TEXT, country TEXT);';
+    var createTableStatement = 'CREATE TABLE hero (id INTEGER PRIMARY KEY, name TEXT, country TEXT, activeDuty BOOLEAN);';
     this.db.run(createTableStatement);
 
     // Insert records.
     try {
-      var insertStatement = 'INSERT INTO hero (id, name, country) VALUES (@id, @name, @country);';
+      var insertStatement = 'INSERT INTO hero (id, name, country, activeDuty) VALUES (@id, @name, @country, @activeDuty);';
       for (let hero of heroObjArray) {
         this.db.run(insertStatement, hero);
       }
@@ -45,9 +45,22 @@ export class HeroDB {
       if (query.country && query.country.length > 0) {
         let countryWheres: string[] = [];
         for (let country of query.country) {
+          if (country == null) {continue;}
           countryWheres.push(`country = "${country}"`);
         }
-        wheres.push('(' + countryWheres.join(' OR ') + ')');
+        if (countryWheres.length > 0) {
+          wheres.push('(' + countryWheres.join(' OR ') + ')');
+        }
+      }
+      if (query.activeDuty && query.activeDuty.length > 0) {
+        let activeDutyWheres: string[] = [];
+        for (let activeDuty of query.activeDuty) {
+          if (activeDuty == null) {continue;}
+          activeDutyWheres.push(`activeDuty = ${+activeDuty}`);
+        }
+        if (activeDutyWheres.length > 0) {
+          wheres.push('(' + activeDutyWheres.join(' OR ') + ')');
+        }
       }
 
       if (wheres.length > 0) {
@@ -74,6 +87,10 @@ export class HeroDB {
       keys.push('country');
       values.push(`"${hero.country}"`);
     }
+    if (hero.activeDuty != null) {
+      keys.push('activeDuty');
+      values.push(`${hero.activeDuty ? 1 : 0}`);
+    }
 
     if (keys.length == 0) {return false;}
 
@@ -99,6 +116,9 @@ export class HeroDB {
     }
     if (hero.country && hero.country.length > 0) {
       sets.push(`country = "${hero.country}"`);
+    }
+    if (hero.activeDuty != null) {
+      sets.push(`activeDuty = ${hero.activeDuty ? 1 : 0}`);
     }
 
     if (sets.length == 0) {return false;}
@@ -156,16 +176,16 @@ export class HeroDB {
 }
 
 const heroObjArray: {}[] = [
-  {'@id': 11, '@name': 'Mr. Nice', '@country': 'US'},
-  {'@id': 12, '@name': 'Narco', '@country': 'UK'},
-  {'@id': 13, '@name': 'Bombasto', '@country': 'US'},
-  {'@id': 14, '@name': 'Celeritas', '@country': 'US'},
-  {'@id': 15, '@name': 'Magneta', '@country': 'UK'},
-  {'@id': 16, '@name': 'RubberMan', '@country': 'UK'},
-  {'@id': 17, '@name': 'Dynama', '@country': 'US'},
-  {'@id': 18, '@name': 'Dr IQ', '@country': 'US'},
-  {'@id': 19, '@name': 'Magma', '@country': 'US'},
-  {'@id': 20, '@name': 'Tornado', '@country': 'US'},
+  {'@id': 11, '@name': 'Mr. Nice', '@country': 'US', '@activeDuty': 1},
+  {'@id': 12, '@name': 'Narco', '@country': 'UK', '@activeDuty': 0},
+  {'@id': 13, '@name': 'Bombasto', '@country': 'US', '@activeDuty': 1},
+  {'@id': 14, '@name': 'Celeritas', '@country': 'US', '@activeDuty': 1},
+  {'@id': 15, '@name': 'Magneta', '@country': 'UK', '@activeDuty': 1},
+  {'@id': 16, '@name': 'RubberMan', '@country': 'UK', '@activeDuty': 1},
+  {'@id': 17, '@name': 'Dynama', '@country': 'US', '@activeDuty': 1},
+  {'@id': 18, '@name': 'Dr IQ', '@country': 'US', '@activeDuty': 1},
+  {'@id': 19, '@name': 'Magma', '@country': 'US', '@activeDuty': 1},
+  {'@id': 20, '@name': 'Tornado', '@country': 'US', '@activeDuty': 1},
 ];
 
 export const HERODB: HeroDB = new HeroDB(heroObjArray);

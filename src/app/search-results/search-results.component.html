@@ -12,6 +12,7 @@
         <th>ID</th>
         <th>Name</th>
         <th>Country</th>
+        <th>Status</th>
       </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
         <td onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.id}}</a></td>
         <td onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.name}}</a></td>
         <td onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.country}}</a></td>
+        <td onclick="this.childNodes[0].click();"><a routerLink="/detail/view/{{hero.id}}">{{hero.activeDuty ? 'active' : 'retired'}}</a></td>
       </tr>
     </tbody>
   </table>
