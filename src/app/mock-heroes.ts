@@ -9,12 +9,12 @@ export class HeroDB {
     this.db = new SQL.Database();
 
     // Create a table in memory.
-    var createTableStatement = 'CREATE TABLE hero (id INTEGER PRIMARY KEY, name TEXT);';
+    var createTableStatement = 'CREATE TABLE hero (id INTEGER PRIMARY KEY, name TEXT, country TEXT);';
     this.db.run(createTableStatement);
 
     // Insert records.
     try {
-      var insertStatement = 'INSERT INTO hero (id, name) VALUES (@id, @name);';
+      var insertStatement = 'INSERT INTO hero (id, name, country) VALUES (@id, @name, @country);';
       for (let hero of heroObjArray) {
         this.db.run(insertStatement, hero);
       }
@@ -45,6 +45,9 @@ export class HeroDB {
     var sets: string[] = [];
     if (hero.name && hero.name.length > 0) {
       sets.push(`name = "${hero.name}"`);
+    }
+    if (hero.country && hero.country.length > 0) {
+      sets.push(`country = "${hero.country}"`);
     }
 
     if (sets.length == 0) {return false;}
@@ -80,16 +83,16 @@ export class HeroDB {
 }
 
 const heroObjArray: {}[] = [
-  {'@id': 11, '@name': 'Mr. Nice'},
-  {'@id': 12, '@name': 'Narco'},
-  {'@id': 13, '@name': 'Bombasto'},
-  {'@id': 14, '@name': 'Celeritas'},
-  {'@id': 15, '@name': 'Magneta'},
-  {'@id': 16, '@name': 'RubberMan'},
-  {'@id': 17, '@name': 'Dynama'},
-  {'@id': 18, '@name': 'Dr IQ'},
-  {'@id': 19, '@name': 'Magma'},
-  {'@id': 20, '@name': 'Tornado'}
+  {'@id': 11, '@name': 'Mr. Nice', '@country': 'US'},
+  {'@id': 12, '@name': 'Narco', '@country': 'UK'},
+  {'@id': 13, '@name': 'Bombasto', '@country': 'US'},
+  {'@id': 14, '@name': 'Celeritas', '@country': 'US'},
+  {'@id': 15, '@name': 'Magneta', '@country': 'UK'},
+  {'@id': 16, '@name': 'RubberMan', '@country': 'UK'},
+  {'@id': 17, '@name': 'Dynama', '@country': 'US'},
+  {'@id': 18, '@name': 'Dr IQ', '@country': 'US'},
+  {'@id': 19, '@name': 'Magma', '@country': 'US'},
+  {'@id': 20, '@name': 'Tornado', '@country': 'US'},
 ];
 
 export const HERODB: HeroDB = new HeroDB(heroObjArray);
