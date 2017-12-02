@@ -15,10 +15,7 @@ export class HeroDB {
 
     // Insert records.
     try {
-      var insertStatement = 'INSERT INTO hero (id, name, country, activeDuty) VALUES (@id, @name, @country, @activeDuty);';
-      for (let hero of heroObjArray) {
-        this.db.run(insertStatement, hero);
-      }
+      this.insertToTable('hero', heroObjArray);
     } catch (e) {
       console.warn(e);
     }
@@ -154,6 +151,24 @@ export class HeroDB {
     return results[0].values.map(elt => elt[0]);
   }
 
+  private insertToTable(table: string, keyValues: {}[]): void {
+    var columnsArray = keyValues.map(e => Object.keys(e));
+    var columns = [...Array.from(new Set([].concat(...columnsArray)))];
+
+    var holders = [];
+    var values = {};
+    for (let index in keyValues) {
+      holders.push(columns.map(e => '@' + e + '_' + index).join(','));
+      var value = keyValues[index];
+      for (let keyValue in value) {
+        values['@' + keyValue + '_' + index] = value[keyValue];
+      }
+    }
+
+    var insertStatement = `INSERT INTO ${table} (${columns.join(',')}) VALUES ${holders.map(e => '(' + e + ')').join(',')};`;
+    this.db.run(insertStatement, values);
+  }
+
   private queryResults2objArray(results: SQL.QueryResults): Hero[] {
     var heroes: Hero[] = [];
 
@@ -174,16 +189,16 @@ export class HeroDB {
 }
 
 const heroObjArray: {}[] = [
-  {'@id': 11, '@name': 'Mr. Nice', '@country': 'US', '@activeDuty': 1},
-  {'@id': 12, '@name': 'Narco', '@country': 'UK', '@activeDuty': 0},
-  {'@id': 13, '@name': 'Bombasto', '@country': 'US', '@activeDuty': 1},
-  {'@id': 14, '@name': 'Celeritas', '@country': 'US', '@activeDuty': 1},
-  {'@id': 15, '@name': 'Magneta', '@country': 'UK', '@activeDuty': 1},
-  {'@id': 16, '@name': 'RubberMan', '@country': 'UK', '@activeDuty': 1},
-  {'@id': 17, '@name': 'Dynama', '@country': 'US', '@activeDuty': 1},
-  {'@id': 18, '@name': 'Dr IQ', '@country': 'US', '@activeDuty': 1},
-  {'@id': 19, '@name': 'Magma', '@country': 'US', '@activeDuty': 1},
-  {'@id': 20, '@name': 'Tornado', '@country': 'US', '@activeDuty': 1},
+  {id: 11, name: 'Mr. Nice',  country: 'US', activeDuty: 1},
+  {id: 12, name: 'Narco',     country: 'UK', activeDuty: 0},
+  {id: 13, name: 'Bombasto',  country: 'US', activeDuty: 1},
+  {id: 14, name: 'Celeritas', country: 'US', activeDuty: 1},
+  {id: 15, name: 'Magneta',   country: 'UK', activeDuty: 1},
+  {id: 16, name: 'RubberMan', country: 'UK', activeDuty: 1},
+  {id: 17, name: 'Dynama',    country: 'US', activeDuty: 1},
+  {id: 18, name: 'Dr IQ',     country: 'US', activeDuty: 1},
+  {id: 19, name: 'Magma',     country: 'US', activeDuty: 1},
+  {id: 20, name: 'Tornado',   country: 'US', activeDuty: 1},
 ];
 
 export const HERODB: HeroDB = new HeroDB(heroObjArray);
