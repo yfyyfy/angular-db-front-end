@@ -24,7 +24,7 @@ export class HeroDB {
   public get(id: number): Hero {
     var selectStatement = `SELECT * FROM hero where id = ${id};`
     var results: SQL.QueryResults[] = this.db.exec(selectStatement);
-    var heroes: Hero[] = this.queryResults2objArray(results[0]);
+    var heroes: Hero[] = this.queryResults2objArray(Hero, results[0]);
     if (heroes.length != 1) {
       console.warn('heroes.length != 1');
     }
@@ -66,7 +66,7 @@ export class HeroDB {
     selectStatement += ';'
 
     var results: SQL.QueryResults[] = this.db.exec(selectStatement);
-    return this.queryResults2objArray(results[0]);
+    return this.queryResults2objArray(Hero, results[0]);
   }
 
   public insert(hero?: Hero): boolean {
@@ -169,23 +169,21 @@ export class HeroDB {
     this.db.run(insertStatement, values);
   }
 
-  private queryResults2objArray(results: SQL.QueryResults): Hero[] {
-    var heroes: Hero[] = [];
-
-    if (! results) {return heroes;}
+  private queryResults2objArray<T>(c: new (o: {}) => T, results: SQL.QueryResults): T[] {
+    var objects: T[] = [];
+    if (!results) {return objects;}
 
     for (let result of results.values) {
-      var obj = {};
+      var o = {};
       for (let i in result) {
-        obj[results.columns[i]] = result[i];
+        o[results.columns[i]] = result[i];
       }
-      var hero: Hero = new Hero(obj);
-      heroes.push(hero);
+      var object: T = new c(o);
+      objects.push(object);
     }
 
-    return heroes;
+    return objects;
   }
-
 }
 
 const heroObjArray: {}[] = [
