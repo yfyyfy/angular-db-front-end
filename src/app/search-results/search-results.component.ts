@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription'
 
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
+import { Query } from '../query';
 import { QueryService } from '../query.service';
 
 @Component({
@@ -29,7 +30,7 @@ export class SearchResultsComponent implements OnInit {
     }
   }
 
-  getHeroes(query?: Hero): void {
+  getHeroes(query?: Query): void {
     this.heroService.getMulti(query).subscribe(heroes => this.heroes = heroes);
   }
 }

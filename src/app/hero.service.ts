@@ -6,6 +6,7 @@ import { of } from 'rxjs/observable/of';
 import { Hero } from './hero';
 import { HeroDB, HERODB } from './mock-heroes';
 import { MessageService } from './message.service';
+import { Query } from './query';
 
 @Injectable()
 export class HeroService {
@@ -17,9 +18,9 @@ export class HeroService {
   }
 
   // Todo: send the messages _after_ heroDB returns value
-  getMulti(hero?: Hero): Observable<Hero[]> {
+  getMulti(query?: Query): Observable<Hero[]> {
     this.messageService.add(`HeroService: search heroes`);
-    return of(this.heroDB.getMulti(hero));
+    return of(this.heroDB.getMulti(query));
   }
 
   get(id: number): Observable<Hero> {

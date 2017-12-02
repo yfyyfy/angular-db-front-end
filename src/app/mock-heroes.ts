@@ -1,4 +1,5 @@
 import { Hero } from './hero';
+import { Query } from './query';
 
 import * as SQL from 'sql.js';
 
@@ -33,7 +34,7 @@ export class HeroDB {
     return heroes[0];
   }
 
-  public getMulti(query?: Hero): Hero[] {
+  public getMulti(query?: Query): Hero[] {
     var selectStatement = 'SELECT * FROM hero';
 
     if (query) {
@@ -42,7 +43,11 @@ export class HeroDB {
         wheres.push(`name LIKE "%${query.name}%"`);
       }
       if (query.country && query.country.length > 0) {
-        wheres.push(`country LIKE "%${query.country}%"`);
+        let countryWheres: string[] = [];
+        for (let country of query.country) {
+          countryWheres.push(`country = "${country}"`);
+        }
+        wheres.push('(' + countryWheres.join(' OR ') + ')');
       }
 
       if (wheres.length > 0) {

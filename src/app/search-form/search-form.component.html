@@ -9,7 +9,7 @@
   <div>
     <label for="country">Country</label>
     <select id="country"
-            [(ngModel)]="model.country" name="country"
+            [(ngModel)]="modelCountry" name="country"
             #country="ngModel">
       <option *ngFor="let country of countries" [value]="country">{{country}}</option>
     </select>

@@ -1,7 +1,7 @@
 import { Component, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { Hero }    from '../hero';
+import { Query }    from '../query';
 import { QueryService } from '../query.service'
 
 @Component({
@@ -13,13 +13,17 @@ export class SearchFormComponent {
   @ViewChild('searchForm') searchForm: NgForm;
 
   countries = ['US', 'UK', 'JP'];
-  model = new Hero({name: '', country: ''});
+  modelCountry: string = undefined;
+  model = new Query({name: '', country: []});
   submitted = false;
 
   constructor(private queryService: QueryService) {}
 
   onSubmit() {
     this.submitted = true;
+    if (this.modelCountry) {
+      this.model.country = [this.modelCountry];
+    }
     this.queryService.publishQuery(this.model);
   }
 
@@ -27,7 +31,7 @@ export class SearchFormComponent {
     this.searchForm.reset();
     // reset() sets all model's properties connected to searchForm to null
     // including Object properties.
-    this.model = new Hero({name: '', country: ''});
+    this.model = new Query({name: '', country: []});
   }
 
   // Todo: for debug.

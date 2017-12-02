@@ -1,13 +1,13 @@
 import { Subject } from 'rxjs/Subject';
 
-import { Hero }    from './hero';
+import { Query }    from './query';
 
 export class QueryService {
 
-  private query = new Subject<Hero>();
+  private query = new Subject<Query>();
   public query$ = this.query.asObservable();
 
-  publishQuery(query: Hero)
+  publishQuery(query: Query)
   {
     this.query.next(query);
   }
