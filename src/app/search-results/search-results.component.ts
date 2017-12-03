@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription'
 
 import { Hero } from '../models/hero';
 import { Query } from '../models/query';
+import { Tabulable } from '../models/tabulable';
 import { HeroService } from '../services/hero.service';
 import { QueryService } from '../services/query.service';
 
@@ -46,5 +47,13 @@ export class SearchResultsComponent implements OnInit {
 
   getHeroes(query?: Query): void {
     this.heroService.getMulti(query).subscribe(heroes => this.heroes = heroes);
+  }
+
+  tableContents(): [any, number][] {
+    return this.heroes.map(e => e.tabulate());
+  }
+
+  range(n:number): number[] {
+    return Array.from(Array(n).keys());
   }
 }
