@@ -1,4 +1,5 @@
 import { Hero } from './hero';
+import { Language } from './language';
 import { Query } from './query';
 
 import * as SQL from 'sql.js';
@@ -32,20 +33,19 @@ export class HeroDB {
       this.db.run('BEGIN TRANSACTION;');
       var selectStatement_h = `SELECT * FROM hero where id = ${id};`
       var results_h: SQL.QueryResults[] = this.db.exec(selectStatement_h);
-      var selectStatement_hl = `SELECT * FROM hero_language where hero_id = ${id};`
-      var results_hl: SQL.QueryResults[] = this.db.exec(selectStatement_hl);
+      var languages = this.selectIn('hero_language', 'hero_id', [id], ['hero_id', true], ['id', true]);
       this.db.run('COMMIT;');
     } catch (e) {
       this.db.run('ROLLBACK;');
     }
     var heroes: Hero[] = this.queryResults2objArray(Hero, results_h[0]);
-    var languages: string[] = this.extractFromQueryResult(results_hl[0], 'name');
+    var languagesObj = this.queryResults2objArray(Language, languages[0]);
 
     if (heroes.length != 1) {
       console.warn('heroes.length != 1');
     }
 
-    heroes[0].languages = languages;
+    heroes[0].languages = languagesObj;
 
     return heroes[0];
   }
@@ -93,13 +93,7 @@ export class HeroDB {
       var languages = this.selectIn('hero_language', 'hero_id', ids, ['hero_id', true], ['id', true]);
       this.db.run('COMMIT;');
 
-      class languageClass {
-        hero_id: number; id: number; name: string;
-        constructor(obj) {
-          this.hero_id = obj.hero_id; this.id = obj.id; this.name = obj.name;
-        }
-      };
-      var languagesObj = this.queryResults2objArray(languageClass, languages[0]);
+      var languagesObj = this.queryResults2objArray(Language, languages[0]);
 
       {
         let mainIndex = 0;
@@ -115,7 +109,7 @@ export class HeroDB {
             return [];
           }
 
-          ret[mainIndex].languages.push(languagesObj[subIndex].name);
+          ret[mainIndex].languages.push(languagesObj[subIndex]);
           ++subIndex;
         }
       }
@@ -163,11 +157,11 @@ export class HeroDB {
       insertStatement += ' ( ' + keys.join(',') + ' ) ';
       insertStatement += ' VALUES ( ' + values.join(',') + ' ) ';
 
-      var heroLanguageObjArray = hero.languages.filter(e => e.length > 0).map(function(e,i) {return {hero_id: hero.id, id: i, name: e}});
+      hero.languages = hero.languages.filter(e => e['name'].length > 0).map(function(e,i) {e.hero_id = hero.id; e.id = i; return e;});
 
       // Execute statements.
       this.db.run(insertStatement);
-      this.insertToTable('hero_language', heroLanguageObjArray);
+      this.insertToTable('hero_language', hero.languages);
       this.db.run('COMMIT;');
     } catch (e) {
       this.db.run('ROLLBACK;');
@@ -198,13 +192,13 @@ export class HeroDB {
     updateStatement_h += ` WHERE id = ${hero.id}`;
 
     var deleteStatement_hl = `DELETE FROM hero_language WHERE hero_id = ${hero.id};`;
-    var heroLanguageObjArray = hero.languages.filter(e => e.length > 0).map(function(e,i) {return {hero_id: hero.id, id: i, name: e}});
+    hero.languages = hero.languages.filter(e => e['name'].length > 0).map(function(e,i) {e.hero_id = hero.id; e.id = i; return e;});
 
     try {
       this.db.run('BEGIN TRANSACTION;');
       this.db.run(updateStatement_h);
       this.db.run(deleteStatement_hl);
-      this.insertToTable('hero_language', heroLanguageObjArray);
+      this.insertToTable('hero_language', hero.languages);
       this.db.run('COMMIT;');
     } catch (e) {
       this.db.run('ROLLBACK;');

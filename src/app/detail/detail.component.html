@@ -6,7 +6,7 @@
 
   <app-input-onedit       [editMode]="isEdit() || isAdd()" [(ngModel)]="hero.name"       [label]="'name'"       [placeholder]="'name'"></app-input-onedit>
   <app-input-onedit       [editMode]="isEdit() || isAdd()" [(ngModel)]="hero.country"    [label]="'country'"    [placeholder]="'country'" [source]="countries"></app-input-onedit>
-  <app-multi-input-onedit [editMode]="isEdit() || isAdd()" [(ngModel)]="hero.languages"  [label]="'languages'"  [placeholder]="'language'"></app-multi-input-onedit>
+  <app-multi-input-onedit [editMode]="isEdit() || isAdd()" [(ngModel)]="hero.languages"  [label]="'languages'"  [placeholder]="'language'" [modelClass]="languageClass" [property]="'name'"></app-multi-input-onedit>
   <app-checkbox-onedit    [editMode]="isEdit() || isAdd()" [(ngModel)]="hero.activeDuty" [label]="'status'"     [checkboxString]="'active duty'" [checkedString]="'active'" [unCheckedString]="'retired'"></app-checkbox-onedit>
 
   <button class="btn btn-primary" *ngIf="isView()" (click)="edit()">edit</button>

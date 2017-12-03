@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 
 import { Hero }         from '../hero';
 import { HeroService }  from '../hero.service';
+import { Language }     from '../language';
 
 enum Mode {add, edit, view};
 
@@ -15,6 +16,7 @@ enum Mode {add, edit, view};
 export class DetailComponent implements OnInit {
   @Input() hero: Hero;
   @Input() mode: Mode;
+  languageClass: new() => Object = Language;
 
   countries: string[];
 

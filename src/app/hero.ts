@@ -1,8 +1,10 @@
+import { Language } from './language';
+
 export class Hero {
   id?: number;
   name?: string;
   country?: string;
-  languages?: string[];
+  languages?: Language[];
   activeDuty?: boolean;
 
   constructor(obj: Hero = {} as Hero) {
