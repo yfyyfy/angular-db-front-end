@@ -20,10 +20,13 @@ export class MultiInputOneditComponent implements ControlValueAccessor {
   @Input() editMode: boolean;
   @Input() label: string;
   @Input() placeholder: string;
+  @Input() property: string;
   @Input() source: any[];
+  @Input() modelClass: new() => Object;
 
   // The internal data model
   private innerValue: any = '';
+  private innerVirtualValue: string[] = null; // Used when modelClass and property are set.
 
   // Placeholders for the callbacks which are later provided
   // by the Control Value Accessor
@@ -32,12 +35,20 @@ export class MultiInputOneditComponent implements ControlValueAccessor {
 
   // get/set accessor
   get value(): any {
-    return this.innerValue;
+    if (this.property != null) {
+      return this.virtualValue;
+    } else {
+      return this.innerValue;
+    }
   };
 
   set value(v: any) {
     if (v !== this.innerValue) {
+    if (this.property != null) {
+      this.virtualValue = v;
+    } else {
       this.innerValue = v;
+    }
       this.onChangeCallback(v);
     }
   }
@@ -60,5 +71,33 @@ export class MultiInputOneditComponent implements ControlValueAccessor {
   // Custom functions
   range(n:number): number[] {
     return Array.from(Array(n).keys());
+  }
+
+  // Custom get/set accessor
+  get virtualValue(): any {
+    if (this.innerVirtualValue == null && this.innerValue != null) {
+      this.innerVirtualValue = this.innerValue.map(e => e[this.property]);
+    }
+
+    if (this.innerVirtualValue != null) {
+      var self = this;
+      this.innerVirtualValue.forEach(function(val, idx) {
+        if (self.innerValue.length < idx) {
+          self.innerValue[idx][self.property] = val;
+        } else {
+          self.innerValue[idx] = new self.modelClass();
+          self.innerValue[idx][self.property] = val;
+        }
+      });
+    }
+
+    return this.innerVirtualValue;
+  };
+
+  set virtualValue(v: any) {
+    if (v !== this.innerVirtualValue) {
+      this.innerVirtualValue = v;
+      this.onChangeCallback(v);
+    }
   }
 }
