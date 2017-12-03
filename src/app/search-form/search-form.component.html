@@ -17,6 +17,14 @@
   </div>
 
   <div class="form-group">
+    <label class="control-label col-sm-2" for="language">Language</label>
+    <div class="col-sm-4">
+      <ng2-multiselect [options]="languages" [settings]="languagesSettings"
+                       [(ngModel)]="model.language" name="language"></ng2-multiselect>
+    </div>
+  </div>
+
+  <div class="form-group">
     <label class="control-label col-sm-2" for="name">Status</label>
     <app-multi-checkbox  class="col-sm-4 checkbox"
                          [contents]="{'active duty': 1, 'retired': 0}"

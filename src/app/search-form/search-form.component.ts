@@ -18,6 +18,9 @@ export class SearchFormComponent {
   countries: any[];
   countriesSettings: IMultiSelectSettings;
 
+  languages: any[];
+  languagesSettings: IMultiSelectSettings;
+
   model = new Query({name: '', country: []});
   submitted = false;
 
@@ -27,6 +30,13 @@ export class SearchFormComponent {
     this.countriesSettings = {
       keyToSelect: 'country',
       lableToDisplay: 'country',
+      isSimpleArray: false
+    };
+
+    heroService.getColumnValues('language').subscribe(columnValues => this.languages = columnValues.map(elt => <any>{'language': elt}));
+    this.languagesSettings = {
+      keyToSelect: 'language',
+      lableToDisplay: 'language',
       isSimpleArray: false
     };
   }

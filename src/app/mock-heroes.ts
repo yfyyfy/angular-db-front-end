@@ -76,6 +76,10 @@ export class HeroDB {
           wheres.push('(' + activeDutyWheres.join(' OR ') + ')');
         }
       }
+      if (query.language && query.language.length > 0) {
+        let languages = query.language.map(e => "'" + e + "'").join(',');
+        wheres.push(`EXISTS (SELECT * FROM hero_language WHERE hero_language.hero_id = hero.id AND hero_language.name IN (${languages}))`);
+      }
 
       if (wheres.length > 0) {
         selectStatement += ' WHERE ' + wheres.join(' AND ');
@@ -228,7 +232,15 @@ export class HeroDB {
   }
 
   public getColumnValues(column: string): any[] {
-    var selectStatement = `SELECT DISTINCT ${column} FROM hero;`
+    var table: string;
+    if (column === 'country') {
+      table = 'hero';
+    } else if (column === 'language') {
+      column = 'name';
+      table = 'hero_language';
+    }
+
+    var selectStatement = `SELECT DISTINCT ${column} FROM ${table};`
     var results: SQL.QueryResults[] = this.db.exec(selectStatement);
 
     return results[0].values.map(elt => elt[0]);
