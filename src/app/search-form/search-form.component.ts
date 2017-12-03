@@ -3,9 +3,9 @@ import { NgForm } from '@angular/forms';
 
 import { IMultiSelectOption,IMultiSelectSettings } from 'ng2-multiselect';
 
-import { Query }    from '../query';
-import { QueryService } from '../query.service'
-import { HeroService } from '../hero.service'
+import { Query }    from '../models/query';
+import { HeroService } from '../services/hero.service'
+import { QueryService } from '../services/query.service'
 
 @Component({
   selector: 'app-search-form',

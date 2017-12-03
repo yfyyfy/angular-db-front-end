@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription'
 
-import { Hero } from '../hero';
-import { HeroService } from '../hero.service';
-import { Query } from '../query';
-import { QueryService } from '../query.service';
+import { Hero } from '../models/hero';
+import { Query } from '../models/query';
+import { HeroService } from '../services/hero.service';
+import { QueryService } from '../services/query.service';
 
 @Component({
   selector: 'app-search-results',

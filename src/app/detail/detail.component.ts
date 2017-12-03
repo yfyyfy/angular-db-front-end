@@ -2,9 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { Hero }         from '../hero';
-import { HeroService }  from '../hero.service';
-import { Language }     from '../language';
+import { Hero }         from '../models/hero';
+import { Language }     from '../models/language';
+import { HeroService }  from '../services/hero.service';
 
 enum Mode {add, edit, view};
 

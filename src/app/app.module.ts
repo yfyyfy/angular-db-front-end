@@ -16,9 +16,9 @@ import { MultiInputOneditComponent } from './multi-input-onedit/multi-input-oned
 import { MessagesComponent }         from './messages/messages.component';
 import { SearchComponent }           from './search/search.component';
 
-import { HeroService }               from './hero.service';
-import { MessageService }            from './message.service';
-import { QueryService }              from './query.service';
+import { HeroService }               from './services/hero.service';
+import { MessageService }            from './services/message.service';
+import { QueryService }              from './services/query.service';
 
 import { AppRoutingModule }          from './app-routing.module';
 
