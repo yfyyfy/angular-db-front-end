@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription'
 
 import { Hero } from '../models/hero';
 import { Query } from '../models/query';
-import { Tabulable } from '../models/tabulable';
+import { Tabulable, TabulableNode } from '../models/tabulable';
 import { HeroService } from '../services/hero.service';
 import { QueryService } from '../services/query.service';
 
@@ -15,7 +15,9 @@ import { QueryService } from '../services/query.service';
 export class SearchResultsComponent implements OnInit {
   configVisible: boolean = false;
   heroes: Hero[];
+  tableContents: {[key: string]: TabulableNode[]};
   columnVisible: boolean[] = [true, true, true, true];
+  columnNames: string[];
 
   private subscriber: Subscription;
 
@@ -46,11 +48,23 @@ export class SearchResultsComponent implements OnInit {
   }
 
   getHeroes(query?: Query): void {
-    this.heroService.getMulti(query).subscribe(heroes => this.heroes = heroes);
+    var self = this;
+    this.heroService.getMulti(query).subscribe(function(heroes) {
+      self.heroes = heroes;
+      self.tableContents = self.getTableContents();
+    });
   }
 
-  tableContents(): [any, number][] {
-    return this.heroes.map(e => e.tabulate());
+  getTableContents(): {[key: string]: TabulableNode[]} {
+    var nodes = Tabulable.calculatePosition(this.heroes);
+    var columns = [{name: 'ID',       path: ['id']},
+                   {name: 'Name',     path: ['name']},
+                   {name: 'Country',  path: ['country']},
+                   {name: 'Status',   path: ['activeDuty']},
+                   {name: 'Language', path: ['languages', 'name']}];
+
+    this.columnNames = columns.map(e => e.name);
+    return TabulableNode.expand(nodes, columns);
   }
 
   range(n:number): number[] {

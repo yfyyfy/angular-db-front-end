@@ -1,4 +1,4 @@
-import { Tabulable } from './tabulable';
+import { Tabulable, TabulableNode } from './tabulable';
 import { Language } from './language';
 
 export class Hero extends Tabulable{
@@ -25,14 +25,17 @@ export class Hero extends Tabulable{
     this.activeDuty = activeDuty;
   }
 
-  tabulate(): [any, number] {
-    var obj = {'ID': [this.id, 1],
-               'Name': [this.name, 1],
-               'Country': [this.country, 1],
-               'Status': [this.activeDuty ? 'active' : 'retired', 1],
-               'Language': this.languages.map(e => e.tabulate())};
-    var size = Math.max(1, this.tabulableArraySize(obj['Language']));
+  tabulate(): TabulableNode {
+    var languages = this.languages.map(e => e.tabulate());
+    var languagesSize = TabulableNode.arrayHeight(languages);
 
-    return [obj, size];
+    var obj = {'id': new TabulableNode(this.id, 1),
+               'name': new TabulableNode(this.name, 1),
+               'country': new TabulableNode(this.country, 1),
+               'activeDuty': new TabulableNode(this.activeDuty ? 'active' : 'retired', 1),
+               'languages': languages};
+    var height = Math.max(1, languagesSize);
+
+    return new TabulableNode(obj, height);
   }
 }

@@ -1,4 +1,4 @@
-import { Tabulable } from './tabulable';
+import { Tabulable, TabulableNode } from './tabulable';
 
 export class Language extends Tabulable {
   hero_id: number;
@@ -18,10 +18,11 @@ export class Language extends Tabulable {
     this.name = name;
   }
 
-  tabulate(): [any, number] {
-    var obj = {'Language': [this.name, 1]};
-    var size = 1;
+  tabulate(): TabulableNode {
+    var obj = {'name': new TabulableNode(this.name, 1)};
+    var height = 1;
 
-    return [obj, size];
+
+    return new TabulableNode(obj, height);
   }
 }

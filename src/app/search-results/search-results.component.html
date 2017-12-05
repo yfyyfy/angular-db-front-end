@@ -21,21 +21,24 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th [ngClass]="{'hide': columnVisible[0] === false}">ID<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
-        <th [ngClass]="{'hide': columnVisible[1] === false}">Name<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
-        <th [ngClass]="{'hide': columnVisible[2] === false}">Country<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
-        <th [ngClass]="{'hide': columnVisible[3] === false}">Status<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
-        <th [ngClass]="{'hide': columnVisible[4] === false}">Language<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span></th>
+        <ng-container *ngFor="let icolumn of range(columnNames.length)">
+          <th [ngClass]="{'hide': columnVisible[icolumn] === false}">
+            {{columnNames[icolumn]}}<span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span>
+          </th>
+        </ng-container>
       </tr>
     </thead>
     <tbody>
-      <ng-container *ngFor="let record of tableContents()">
-        <tr *ngFor="let nrow of range(record[1])">
-          <td *ngIf="nrow==0" [ngClass]="{'hide': columnVisible[0] === false}" onclick="this.childNodes[0].click();" attr.rowspan="{{record[1]}}"><a routerLink="/detail/view/{{record[0]['ID'][0]}}">{{record[0]['ID'][0]}}</a></td>
-          <td *ngIf="nrow==0" [ngClass]="{'hide': columnVisible[1] === false}" onclick="this.childNodes[0].click();" attr.rowspan="{{record[1]}}"><a routerLink="/detail/view/{{record[0]['ID'][0]}}">{{record[0]['Name'][0]}}</a></td>
-          <td *ngIf="nrow==0" [ngClass]="{'hide': columnVisible[2] === false}" onclick="this.childNodes[0].click();" attr.rowspan="{{record[1]}}"><a routerLink="/detail/view/{{record[0]['ID'][0]}}">{{record[0]['Country'][0]}}</a></td>
-          <td *ngIf="nrow==0" [ngClass]="{'hide': columnVisible[3] === false}" onclick="this.childNodes[0].click();" attr.rowspan="{{record[1]}}"><a routerLink="/detail/view/{{record[0]['ID'][0]}}">{{record[0]['Status'][0]}}</a></td>
-          <td                 [ngClass]="{'hide': columnVisible[4] === false}" onclick="this.childNodes[0].click();"                             ><a routerLink="/detail/view/{{record[0]['ID'][0]}}">{{record[0]['Language'].length > 0 ? record[0]['Language'][nrow][0]['Language'][0] : ''}}</a></td>
+      <ng-container>
+        <tr *ngFor="let irow of range(tableContents[columnNames[0]].length)">
+          <ng-container *ngFor="let icolumn of range(columnNames.length)">
+            <td *ngIf="tableContents[columnNames[icolumn]][irow].rowspan > 0"
+                [ngClass]="{'hide': columnVisible[icolumn] === false}"
+                onclick="this.getElementsByTagName('a')[0].click();"
+                attr.rowspan="{{tableContents[columnNames[icolumn]][irow].rowspan}}">
+              <a routerLink="/detail/view/{{tableContents['ID'][irow].item}}">{{tableContents[columnNames[icolumn]][irow].item}}</a>
+            </td>
+          </ng-container>
         </tr>
       </ng-container>
     </tbody>
