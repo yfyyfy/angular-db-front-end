@@ -16,7 +16,7 @@ export class SearchResultsComponent implements OnInit {
   configVisible: boolean = false;
   heroes: Hero[];
   tableContents: {[key: string]: TabulableNode[]};
-  columnVisible: boolean[] = [true, true, true, true];
+  columnVisible: boolean[];
   columnNames: string[];
 
   private subscriber: Subscription;
@@ -63,6 +63,7 @@ export class SearchResultsComponent implements OnInit {
                    {name: 'Status',   path: ['activeDuty']},
                    {name: 'Language', path: ['languages', 'name']}];
 
+    this.columnVisible = columns.map(e => true);
     this.columnNames = columns.map(e => e.name);
     return TabulableNode.expand(nodes, columns);
   }

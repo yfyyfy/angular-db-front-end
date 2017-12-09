@@ -3,12 +3,15 @@
   <div class="panel-heading">
     <h3 class="panel-title">Column visibility setting</h3><span class="glyphicon glyphicon-remove pull-right" (click)="toggleConfigVisibility()"></span>
   </div>
-  <div class="row">
-    <div class="col-md-3"><label><input type="checkbox" [(ngModel)]="columnVisible[0]">ID</label></div>
-    <div class="col-md-3"><label><input type="checkbox" [(ngModel)]="columnVisible[1]">Name</label></div>
-    <div class="col-md-3"><label><input type="checkbox" [(ngModel)]="columnVisible[2]">Country</label></div>
-    <div class="col-md-3"><label><input type="checkbox" [(ngModel)]="columnVisible[3]">Status</label></div>
-  </div>
+  <ng-container *ngFor="let icolumn of range(columnNames.length)">
+    <ng-container *ngIf="icolumn % 4 == 0">
+      <div class="row">
+        <ng-container *ngFor="let d of range(4)">
+          <div *ngIf="icolumn + d < columnNames.length" class="col-md-3"><label><input type="checkbox" [(ngModel)]="columnVisible[icolumn + d]">{{columnNames[icolumn + d]}}</label></div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </ng-container>
 </div>
 
 <div *ngIf="heroes.length == 0; then c1 else c2"></div>
