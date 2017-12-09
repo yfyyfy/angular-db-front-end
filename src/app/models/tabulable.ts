@@ -9,6 +9,14 @@ export class TabulableNode {
     this.height = height;
   }
 
+  isEmpty(): boolean {
+    return this.item === null;
+  }
+
+  static emptyNode(): TabulableNode {
+    return new TabulableNode(null, 1);
+  }
+
   static arrayHeight(array:TabulableNode[]): number {
     return array.map(e => e.height).reduce(function(prev, current) {return prev + current;}, 0);
   };
@@ -23,8 +31,17 @@ export class TabulableNode {
         if (index == 0) {
           columnRows = nodes.map((node: TabulableNode) => [node.height, node.item[key]]);
         } else {
-          columnRows = columnRows.filter(e => e[1].length > 0);
-          columnRows = columnRows.map(e => e[1].map((node: TabulableNode) => [node.height, node.item[key]]));
+          columnRows = columnRows.map(e => e[1].map(function(node: TabulableNode) {
+            if (node.isEmpty()) {
+              if (index < column.path.length - 1) {
+                return [e[0], [node]];
+              } else {
+                return [e[0], node];
+              }
+            } else {
+              return [node.height, node.item[key]];
+            }
+          }));
           columnRows = [].concat(...columnRows);
         }
       });
@@ -63,7 +80,7 @@ export class TabulableNode {
 export class Tabulable {
   // Override this.
   tabulate(): TabulableNode {
-    return new TabulableNode(null, -1);
+    return TabulableNode.emptyNode();
   }
 
   static calculatePosition(tabulables: Tabulable[]): TabulableNode[] {
@@ -89,6 +106,11 @@ export class Tabulable {
       if (node.item[key] instanceof TabulableNode) {
         Tabulable._calculatePosition((<TabulableNode>node).item[key], position);
       } else if (node.item[key] instanceof Array) {
+        // Fill an empty array with a dummy data.
+        if ((<TabulableNode[]>node.item[key]).length == 0) {
+          (<TabulableNode[]>node.item[key]).push(TabulableNode.emptyNode());
+        }
+
         var heightSum = position;
         (<TabulableNode[]>node.item[key]).forEach(function(subNode: TabulableNode) {
           var height = subNode.height;
