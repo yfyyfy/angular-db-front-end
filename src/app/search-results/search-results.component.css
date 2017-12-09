@@ -33,3 +33,7 @@ a {
   color: #888;
   text-decoration: none;
 }
+
+span.glyphicon-remove {
+  cursor: pointer;
+}
