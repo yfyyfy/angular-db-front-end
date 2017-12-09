@@ -78,7 +78,7 @@ export class Tabulable {
     return ret;
   }
 
-  static _calculatePosition(node:TabulableNode, position: number): void {
+  static _calculatePosition(node: TabulableNode, position: number): void {
     node.position = position;
 
     if (typeof(node.item) !== 'object') {return;}
