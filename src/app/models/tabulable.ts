@@ -16,8 +16,6 @@ export class TabulableNode {
   static expand(nodes:TabulableNode[], columns: {path: string[], name: string}[]): {[key: string]: TabulableNode[]} {
     // console.log(JSON.stringify(nodes));
 
-    var nrow = nodes[nodes.length - 1].position + nodes[nodes.length - 1].height;
-
     var tableData = {}; // tableData's keys are column names. tableData[key][idx] is idx-th row's data of the key.
     columns.forEach(function(column) {
       var columnRows;
@@ -44,12 +42,16 @@ export class TabulableNode {
       });
 
       // Populate with empty TabulableNode.
-      var previousItem = null;
-      for (let idx = 0; idx < nrow; ++idx) {
-        if (tableData[column.name][idx] == null) {
-          tableData[column.name][idx] = new TabulableNode(previousItem, 0);
-        } else {
-          previousItem = tableData[column.name][idx].item;
+      if (nodes.length > 0) {
+        var nrow = nodes[nodes.length - 1].position + nodes[nodes.length - 1].height;
+
+        var previousItem = null;
+        for (let idx = 0; idx < nrow; ++idx) {
+          if (tableData[column.name][idx] == null) {
+            tableData[column.name][idx] = new TabulableNode(previousItem, 0);
+          } else {
+            previousItem = tableData[column.name][idx].item;
+          }
         }
       }
     });
