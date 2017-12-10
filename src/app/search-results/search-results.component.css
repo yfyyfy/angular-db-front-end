@@ -13,8 +13,12 @@ span.setting-icon {
   color: #888;
 }
 
+thead th {
+  background: #ebebeb;
+}
+
 thead th:hover {
-  background: #eee;
+  background: #d6d6d6;
 }
 
 thead th:not(:hover) span.glyphicon-remove {
