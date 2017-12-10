@@ -16,6 +16,8 @@ import { MultiInputOneditComponent } from './multi-input-onedit/multi-input-oned
 import { MessagesComponent }         from './messages/messages.component';
 import { SearchComponent }           from './search/search.component';
 
+import { EmptyStringPipe }           from './pipes/empty-string.pipe';
+
 import { HeroService }               from './services/hero.service';
 import { MessageService }            from './services/message.service';
 import { QueryService }              from './services/query.service';
@@ -40,7 +42,8 @@ import { AppRoutingModule }          from './app-routing.module';
     MultiInputOneditComponent,
     SearchComponent,
     SearchFormComponent,
-    SearchResultsComponent
+    SearchResultsComponent,
+    EmptyStringPipe
   ],
   providers: [ HeroService, MessageService, QueryService ],
   bootstrap: [ AppComponent ]

@@ -41,12 +41,12 @@
                 rowSpan="{{tableContents[columnNames[icolumn]][irow].rowspan}}">
               <ng-container *ngIf="tableContents[columnNames[icolumn]][irow].href != null || tableContents[columnNames[icolumn]][irow].routerLink != null then c8 else c9"></ng-container>
               <ng-template #c8>
-                <a *ngIf="tableContents[columnNames[icolumn]][irow].href != null"       href="{{tableContents[columnNames[icolumn]][irow].href}}" target="_blank">{{tableContents[columnNames[icolumn]][irow].item}}</a>
-                <a *ngIf="tableContents[columnNames[icolumn]][irow].href == null" routerLink="{{tableContents[columnNames[icolumn]][irow].routerLink}}"          >{{tableContents[columnNames[icolumn]][irow].item}}</a>
+                <a *ngIf="tableContents[columnNames[icolumn]][irow].href != null"       href="{{tableContents[columnNames[icolumn]][irow].href}}" target="_blank">{{tableContents[columnNames[icolumn]][irow].item | emptyString}}</a>
+                <a *ngIf="tableContents[columnNames[icolumn]][irow].href == null" routerLink="{{tableContents[columnNames[icolumn]][irow].routerLink}}"          >{{tableContents[columnNames[icolumn]][irow].item | emptyString}}</a>
               </ng-template>
               <ng-template #c9>
-                <a *ngIf="tableContents[linkColumnName      ][irow].href != null"       href="{{tableContents[linkColumnName      ][irow].href}}" target="_blank">{{tableContents[columnNames[icolumn]][irow].item}}</a>
-                <a *ngIf="tableContents[linkColumnName      ][irow].href == null" routerLink="{{tableContents[linkColumnName      ][irow].routerLink}}"          >{{tableContents[columnNames[icolumn]][irow].item}}</a>
+                <a *ngIf="tableContents[linkColumnName      ][irow].href != null"       href="{{tableContents[linkColumnName      ][irow].href}}" target="_blank">{{tableContents[columnNames[icolumn]][irow].item | emptyString}}</a>
+                <a *ngIf="tableContents[linkColumnName      ][irow].href == null" routerLink="{{tableContents[linkColumnName      ][irow].routerLink}}"          >{{tableContents[columnNames[icolumn]][irow].item | emptyString}}</a>
               </ng-template>
             </td>
           </ng-container>
