@@ -29,7 +29,7 @@ export class Hero extends Tabulable{
     var languages = this.languages.map(e => e.tabulate());
     var languagesSize = TabulableNode.arrayHeight(languages);
 
-    var obj = {'id': new TabulableNode(this.id, 1),
+    var obj = {'id': new TabulableNode(this.id, 1).setRouterLink(`/detail/view/${this.id}`),
                'name': new TabulableNode(this.name, 1),
                'country': new TabulableNode(this.country, 1),
                'activeDuty': new TabulableNode(this.activeDuty ? 'active' : 'retired', 1),

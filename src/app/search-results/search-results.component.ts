@@ -18,6 +18,7 @@ export class SearchResultsComponent implements OnInit {
   tableContents: {[key: string]: TabulableNode[]};
   columnVisible: boolean[];
   columnNames: string[];
+  linkColumnName: string; // The name of the column whose link is applied to the all cells in the same row.
 
   private subscriber: Subscription;
 
@@ -63,6 +64,7 @@ export class SearchResultsComponent implements OnInit {
                    {name: 'Status',   path: ['activeDuty']},
                    {name: 'Language', path: ['languages', 'name']}];
 
+    this.linkColumnName = 'ID';
     this.columnVisible = columns.map(e => true);
     this.columnNames = columns.map(e => e.name);
     return TabulableNode.expand(nodes, columns);

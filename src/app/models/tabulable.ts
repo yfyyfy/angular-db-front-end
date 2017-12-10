@@ -1,12 +1,39 @@
 export class TabulableNode {
   item: boolean | number | string | {[s: string]: TabulableNode | TabulableNode[]};
   height: number;
+  href: string;
   position: number;
+  routerLink: string;
   rowspan: number;
 
   constructor(item: boolean | number | string | {[s: string]: TabulableNode | TabulableNode[]}, height: number) {
     this.item = item;
     this.height = height;
+  }
+
+  setItem(item: boolean | number | string | {[s: string]: TabulableNode | TabulableNode[]}): TabulableNode {
+    this.item = item;
+    return this;
+  }
+  setHeight(height: number): TabulableNode {
+    this.height = height;
+    return this;
+  }
+  setHref(href: string): TabulableNode {
+    this.href = href;
+    return this;
+  }
+  setPosition(position: number): TabulableNode {
+    this.position = position;
+    return this;
+  }
+  setRouterLink(routerLink: string): TabulableNode {
+    this.routerLink = routerLink;
+    return this;
+  }
+  setRowspan(rowspan: number): TabulableNode {
+    this.rowspan = rowspan;
+    return this;
   }
 
   isEmpty(): boolean {
@@ -62,12 +89,12 @@ export class TabulableNode {
       if (nodes.length > 0) {
         var nrow = nodes[nodes.length - 1].position + nodes[nodes.length - 1].height;
 
-        var previousItem = null;
+        var previousNode: TabulableNode;
         for (let idx = 0; idx < nrow; ++idx) {
           if (tableData[column.name][idx] == null) {
-            tableData[column.name][idx] = new TabulableNode(previousItem, 0);
+            tableData[column.name][idx] = new TabulableNode(previousNode.item, 0).setHref(previousNode.href).setRouterLink(previousNode.routerLink);
           } else {
-            previousItem = tableData[column.name][idx].item;
+            previousNode = tableData[column.name][idx];
           }
         }
       }
