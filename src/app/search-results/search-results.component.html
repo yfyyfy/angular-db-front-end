@@ -35,7 +35,7 @@
             <td *ngIf="tableContents[columnNames[icolumn]][irow].rowspan > 0"
                 [ngClass]="{'hide': columnVisible[icolumn] === false}"
                 onclick="this.getElementsByTagName('a')[0].click();"
-                attr.rowspan="{{tableContents[columnNames[icolumn]][irow].rowspan}}">
+                rowSpan="{{tableContents[columnNames[icolumn]][irow].rowspan}}">
               <a routerLink="/detail/view/{{tableContents['ID'][irow].item}}">{{tableContents[columnNames[icolumn]][irow].item}}</a>
             </td>
           </ng-container>
