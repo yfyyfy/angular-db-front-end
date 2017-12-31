@@ -1,5 +1,6 @@
 /* Master Styles */
-@import url('https://unpkg.com/bootstrap@3.3.7/dist/css/bootstrap.min.css');
+/* @import url('https://unpkg.com/bootstrap@3.3.7/dist/css/bootstrap.min.css'); */
+@import url('assets/bootstrap-3.3.7/css/bootstrap.min.css');
 
 h1 {
   color: #369;
