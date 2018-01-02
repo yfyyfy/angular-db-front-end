@@ -3,9 +3,11 @@ import { Subscription } from 'rxjs/Subscription'
 
 import { Hero } from '../models/hero';
 import { Query } from '../models/query';
+import { TableColumn } from '../models/table-column';
 import { Tabulable, TabulableNode } from '../models/tabulable';
 import { HeroService } from '../services/hero.service';
 import { QueryService } from '../services/query.service';
+import { SETTINGS } from './search-results.component.settings';
 
 @Component({
   selector: 'app-search-results',
@@ -62,21 +64,20 @@ export class SearchResultsComponent implements OnInit {
 
   getTableContents(): {[key: string]: TabulableNode[]} {
     var nodes = Tabulable.calculatePosition(this.heroes);
-    var columns: any = [{name: 'ID',       path: ['id']},
-                        {name: 'Name',     path: ['name']},
-                        {name: 'Country',  path: ['country']},
-                        {name: 'Status',   path: ['activeDuty']},
-                        {name: 'Language', path: ['languages', 'name']}];
+    this.setTableSettings(SETTINGS);
 
+    return TabulableNode.expand(nodes, SETTINGS.tableColumns);
+  }
 
-    this.columnVisible = columns.map(e => ! e.invisibleByDefault);
-    this.columnNames = columns.map(e => e.name);
-    this.columnWidths = columns.map(e => e.width);
-    this.togglableColumnIndices = columns.map((e, i) => e.fixed ? null : i).filter(e => e != null);
+  setTableSettings(settings) {
+    this.columnVisible             = settings.tableColumns.map(e => ! e.invisibleByDefault);
+    this.columnNames               = settings.tableColumns.map(e => e.name);
+    this.columnWidths              = settings.tableColumns.map(e => e.width);
+    this.togglableColumnIndices    = settings.tableColumns.map((e, i) => e.fixed ? null : i).filter(e => e != null);
 
-    this.linkColumnName = 'ID';
-
-    return TabulableNode.expand(nodes, columns);
+    this.linkColumnName            = settings.linkColumnName;
+    this.tableWidth                = settings.tableWidth;
+    this.tableHorizontalScrollable = settings.tableHorizontalScrollable;
   }
 
   range(n:number): number[] {

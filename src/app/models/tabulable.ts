@@ -1,3 +1,5 @@
+import { TableColumn } from './table-column';
+
 export class TabulableNode {
   item: boolean | number | string | {[s: string]: TabulableNode | TabulableNode[]};
   height: number;
@@ -48,7 +50,7 @@ export class TabulableNode {
     return array.map(e => e.height).reduce(function(prev, current) {return prev + current;}, 0);
   };
 
-  static expand(nodes:TabulableNode[], columns: {path: string[], name: string}[]): {[key: string]: TabulableNode[]} {
+  static expand(nodes:TabulableNode[], columns: TableColumn[]): {[key: string]: TabulableNode[]} {
     // console.log(JSON.stringify(nodes));
 
     var tableData = {}; // tableData's keys are column names. tableData[key][idx] is idx-th row's data of the key.
