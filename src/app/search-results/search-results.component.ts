@@ -16,8 +16,12 @@ export class SearchResultsComponent implements OnInit {
   configVisible: boolean = false;
   heroes: Hero[];
   tableContents: {[key: string]: TabulableNode[]};
+  tableWidth: string;
+  tableHorizontalScrollable: boolean;
   columnVisible: boolean[];
   columnNames: string[];
+  columnWidths: string[];
+  togglableColumnIndices: number[];
   linkColumnName: string; // The name of the column whose link is applied to the all cells in the same row.
 
   private subscriber: Subscription;
@@ -58,15 +62,20 @@ export class SearchResultsComponent implements OnInit {
 
   getTableContents(): {[key: string]: TabulableNode[]} {
     var nodes = Tabulable.calculatePosition(this.heroes);
-    var columns = [{name: 'ID',       path: ['id']},
-                   {name: 'Name',     path: ['name']},
-                   {name: 'Country',  path: ['country']},
-                   {name: 'Status',   path: ['activeDuty']},
-                   {name: 'Language', path: ['languages', 'name']}];
+    var columns: any = [{name: 'ID',       path: ['id']},
+                        {name: 'Name',     path: ['name']},
+                        {name: 'Country',  path: ['country']},
+                        {name: 'Status',   path: ['activeDuty']},
+                        {name: 'Language', path: ['languages', 'name']}];
+
+
+    this.columnVisible = columns.map(e => ! e.invisibleByDefault);
+    this.columnNames = columns.map(e => e.name);
+    this.columnWidths = columns.map(e => e.width);
+    this.togglableColumnIndices = columns.map((e, i) => e.fixed ? null : i).filter(e => e != null);
 
     this.linkColumnName = 'ID';
-    this.columnVisible = columns.map(e => true);
-    this.columnNames = columns.map(e => e.name);
+
     return TabulableNode.expand(nodes, columns);
   }
 
