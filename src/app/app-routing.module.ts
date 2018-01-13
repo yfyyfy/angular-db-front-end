@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'detail/:mode', component: DetailComponent },
   { path: 'detail/:mode/:id', component: DetailComponent },
   { path: 'messages', component: MessagesComponent },
-  { path: 'search', component: SearchComponent }
+  { path: 'search', component: SearchComponent, data: {shouldDetach: true} }
 ];
 
 @NgModule({
