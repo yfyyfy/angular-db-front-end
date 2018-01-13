@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {CustomReuseStrategy} from './custom-reuse-strategy';
 
 @Component({
   selector: 'app-root',

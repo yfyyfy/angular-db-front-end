@@ -24,6 +24,9 @@ import { QueryService }              from './services/query.service';
 
 import { AppRoutingModule }          from './app-routing.module';
 
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomReuseStrategy } from './custom-reuse-strategy';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -45,7 +48,12 @@ import { AppRoutingModule }          from './app-routing.module';
     SearchResultsComponent,
     EmptyStringPipe
   ],
-  providers: [ HeroService, MessageService, QueryService ],
+  providers: [
+    HeroService,
+    MessageService,
+    QueryService,
+    {provide: RouteReuseStrategy, useClass: CustomReuseStrategy}
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
