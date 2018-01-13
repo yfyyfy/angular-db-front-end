@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs/Subject';
 
-import { Query }    from '../models/query';
+import { Query }    from 'app/models/query';
 
 export class QueryService {
 

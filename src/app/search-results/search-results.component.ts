@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription'
 
-import { Hero } from '../models/hero';
-import { Query } from '../models/query';
-import { TableColumn } from '../models/table-column';
-import { Tabulable, TabulableNode } from '../models/tabulable';
-import { HeroService } from '../services/hero.service';
-import { QueryService } from '../services/query.service';
+import { Hero } from 'app/models/hero';
+import { Query } from 'app/models/query';
+import { TableColumn } from 'app/models/table-column';
+import { Tabulable, TabulableNode } from 'app/models/tabulable';
+import { HeroService } from 'app/services/hero.service';
+import { QueryService } from 'app/services/query.service';
 import { SETTINGS } from './search-results.component.settings';
 
 @Component({

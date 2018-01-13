@@ -1,9 +1,9 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DetailComponent } from './detail/detail.component';
-import { MessagesComponent } from './messages/messages.component';
-import { SearchComponent } from './search/search.component';
+import { DetailComponent } from 'app/detail/detail.component';
+import { MessagesComponent } from 'app/messages/messages.component';
+import { SearchComponent } from 'app/search/search.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/search', pathMatch: 'full' },

@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { of } from 'rxjs/observable/of';
 
-import { Hero } from '../models/hero';
-import { HeroDB, HERODB } from '../mock-heroes';
+import { Hero } from 'app/models/hero';
+import { HeroDB, HERODB } from 'app/mock-heroes';
 import { MessageService } from './message.service';
-import { Query } from '../models/query';
+import { Query } from 'app/models/query';
 
 @Injectable()
 export class HeroService {

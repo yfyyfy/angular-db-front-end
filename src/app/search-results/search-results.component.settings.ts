@@ -1,4 +1,4 @@
-import { TableColumn } from '../models/table-column';
+import { TableColumn } from 'app/models/table-column';
 
 var tableColumns: TableColumn[] = [
   {name: 'ID',       path: ['id']},

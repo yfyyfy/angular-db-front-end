@@ -1,6 +1,6 @@
-import { Hero } from './models/hero';
-import { Language } from './models/language';
-import { Query } from './models/query';
+import { Hero } from 'app/models/hero';
+import { Language } from 'app/models/language';
+import { Query } from 'app/models/query';
 
 import * as SQL from 'ext/sql.js';
 
