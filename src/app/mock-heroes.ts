@@ -99,23 +99,8 @@ export class HeroDB {
 
       var languagesObj = this.queryResults2objArray(Language, languages[0]);
 
-      {
-        let mainIndex = 0;
-        let subIndex = 0;
-
-        while (subIndex < languagesObj.length) {
-          while (ret[mainIndex].id < languagesObj[subIndex].hero_id) {
-            ++mainIndex;
-          }
-
-          if (ret[mainIndex].id !== languagesObj[subIndex].hero_id) {
-            console.warn('Matching error.');
-            return [];
-          }
-
-          ret[mainIndex].languages.push(languagesObj[subIndex]);
-          ++subIndex;
-        }
+      if (! this.appendChildren(ret, languagesObj, 'id', 'hero_id', 'languages')) {
+        return [];
       }
 
       return ret;
@@ -291,6 +276,30 @@ export class HeroDB {
     }
 
     return objects;
+  }
+
+  // Append child's element to parent's element under appendKey.
+  // parentKey and childKey are used for matching the elements.
+  // Parent's array and child's array should be ordered by parentKey and childKey.
+  private appendChildren(parent: {}[], child: {}[], parentKey: string, childKey: string, appendKey: string): boolean {
+    var parentIndex = 0;
+    var childIndex = 0;
+
+    while (childIndex < child.length) {
+      while (parent[parentIndex][parentKey] < child[childIndex][childKey]) {
+        ++parentIndex;
+      }
+
+      if (parent[parentIndex][parentKey] !== child[childIndex][childKey]) {
+        console.warn('Matching error.');
+        return false;
+      }
+
+      parent[parentIndex][appendKey].push(child[childIndex]);
+      ++childIndex;
+    }
+
+    return true;
   }
 
   private extractFromQueryResult(results: SQL.QueryResults, key: string): any[] {
