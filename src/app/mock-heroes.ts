@@ -283,34 +283,14 @@ export class HeroDB {
   // Append child's element to parent's element under appendKey.
   // parentKey and childKey are used for matching the elements.
   private appendChildren(parent: {}[], child: {}[], parentKey: string, childKey: string, appendKey: string): boolean {
-    var parentMap: Map<any, number> = <Map<any, number>>(parent.reduce(function(acc: Map<any, number>, val, idx) {acc.set(val[parentKey], idx); return acc;}, new Map()));
-    var childMap: Map<any, number> = <Map<any, number>>(child.reduce(function(acc: Map<any, number>, val, idx) {acc.set(val, idx); return acc;}, new Map()));
+    var parentMap: Map<any, number> = <Map<any, number>>(parent.reduce(function(acc: Map<any, number>, val: any, idx: number) {acc.set(val[parentKey], idx); return acc;}, new Map()));
 
-    var copiedChild = child.slice();
-    copiedChild.sort(function(a, b) {
-      var diff = parentMap.get(a[childKey]) - parentMap.get(b[childKey]);
-      if (diff != 0) {
-        return diff;
-      } else {
-        return childMap.get(a) - childMap.get(b);
-      }
+    child.forEach(function(e) {
+      var idx = parentMap.get(e[childKey]);
+      if (idx == null) {return false;}
+
+      parent[idx][appendKey].push(e);
     });
-
-    var parentIndex = 0;
-    var childIndex = 0;
-    while (childIndex < copiedChild.length) {
-      while (parentMap.get(parent[parentIndex][parentKey]) < parentMap.get(copiedChild[childIndex][childKey])) {
-        ++parentIndex;
-      }
-
-      if (parentMap.get(parent[parentIndex][parentKey]) !== parentMap.get(copiedChild[childIndex][childKey])) {
-        console.warn('Matching error.');
-        return false;
-      }
-
-      parent[parentIndex][appendKey].push(copiedChild[childIndex]);
-      ++childIndex;
-    }
 
     return true;
   }
