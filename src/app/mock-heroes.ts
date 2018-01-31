@@ -258,7 +258,9 @@ export class HeroDB {
       orderby = 'ORDER BY ' + orderby;
     }
 
-    var selectStatement = `SELECT * FROM ${table} WHERE ${column} IN (${values.join(',')}) ${orderby};`;
+    var inStr = values.map(e => (typeof e === 'string' || e instanceof String) ? JSON.stringify(e) : e).join(',');
+    var selectStatement = `SELECT * FROM ${table} WHERE ${column} IN (${inStr}) ${orderby};`;
+
     return this.db.exec(selectStatement);
   }
 
