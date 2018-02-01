@@ -26,16 +26,13 @@ export class Hero extends Tabulable{
   }
 
   tabulate(): TabulableNode {
-    var languages = this.languages.map(e => e.tabulate());
-    var languagesSize = TabulableNode.arrayHeight(languages);
+    var obj = {'id': new TabulableNode(this.id).setRouterLink(`/detail/view/${this.id}`),
+               'name': new TabulableNode(this.name),
+               'country': new TabulableNode(this.country),
+               'activeDuty': new TabulableNode(this.activeDuty ? 'active' : 'retired'),
+               'languages': this.languages.map(e => e.tabulate()),
+              };
 
-    var obj = {'id': new TabulableNode(this.id, 1).setRouterLink(`/detail/view/${this.id}`),
-               'name': new TabulableNode(this.name, 1),
-               'country': new TabulableNode(this.country, 1),
-               'activeDuty': new TabulableNode(this.activeDuty ? 'active' : 'retired', 1),
-               'languages': languages};
-    var height = Math.max(1, languagesSize);
-
-    return new TabulableNode(obj, height);
+    return new TabulableNode(obj);
   }
 }

@@ -8,9 +8,20 @@ export class TabulableNode {
   routerLink: string;
   rowspan: number;
 
-  constructor(item: boolean | number | string | {[s: string]: TabulableNode | TabulableNode[]}, height: number) {
+  constructor(item: boolean | number | string | {[s: string]: TabulableNode | TabulableNode[]}) {
+    var isBoolean = typeof item === 'boolean';
+    var isString = (typeof item === 'string' || item instanceof String);
+    var isNumber = typeof item === 'number';
+    var isNull = item === null;
+
     this.item = item;
-    this.height = height;
+
+    if (isBoolean || isString || isNumber || isNull) {
+      this.height = 1;
+    } else {
+      var heights = Object.values(item).map(e=>TabulableNode.height(e));
+      this.height = Math.max(...heights);
+    }
   }
 
   setItem(item: boolean | number | string | {[s: string]: TabulableNode | TabulableNode[]}): TabulableNode {
@@ -43,14 +54,22 @@ export class TabulableNode {
   }
 
   static emptyNode(): TabulableNode {
-    return new TabulableNode(null, 1);
+    return new TabulableNode(null);
   }
 
-  static arrayHeight(array:TabulableNode[]): number {
+  static arrayHeight(array: TabulableNode[]): number {
     return array.map(e => e.height).reduce(function(prev, current) {return prev + current;}, 0);
   };
 
-  static expand(nodes:TabulableNode[], columns: TableColumn[]): {[key: string]: TabulableNode[]} {
+  static height(arg: TabulableNode | TabulableNode[]): number {
+    if (arg instanceof TabulableNode) {
+      return arg.height;
+    } else {
+      return this.arrayHeight(arg);
+    }
+  };
+
+  static expand(nodes: TabulableNode[], columns: TableColumn[]): {[key: string]: TabulableNode[]} {
     // console.log(JSON.stringify(nodes));
 
     var tableData = {}; // tableData's keys are column names. tableData[key][idx] is idx-th row's data of the key.
@@ -94,7 +113,7 @@ export class TabulableNode {
         var previousNode: TabulableNode;
         for (let idx = 0; idx < nrow; ++idx) {
           if (tableData[column.name][idx] == null) {
-            tableData[column.name][idx] = new TabulableNode(previousNode.item, 0).setHref(previousNode.href).setRouterLink(previousNode.routerLink);
+            tableData[column.name][idx] = new TabulableNode(previousNode.item).setHeight(0).setHref(previousNode.href).setRouterLink(previousNode.routerLink);
           } else {
             previousNode = tableData[column.name][idx];
           }

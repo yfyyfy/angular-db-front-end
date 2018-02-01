@@ -19,10 +19,8 @@ export class Language extends Tabulable {
   }
 
   tabulate(): TabulableNode {
-    var obj = {'name': new TabulableNode(this.name, 1)};
-    var height = 1;
+    var obj = {'name': new TabulableNode(this.name)};
 
-
-    return new TabulableNode(obj, height);
+    return new TabulableNode(obj);
   }
 }
