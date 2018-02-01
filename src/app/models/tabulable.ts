@@ -79,7 +79,9 @@ export class TabulableNode {
         if (index == 0) {
           columnRows = nodes.map((node: TabulableNode) => [node.height, node.item[key]]);
         } else {
-          columnRows = columnRows.map(e => e[1].map(function(node: TabulableNode) {
+          columnRows = columnRows.map(e => e[1].map(function(node: TabulableNode, idx: number) {
+            // console.log(e[0] + " " + e[1].length + " " + idx + " " + node.position);
+
             if (node.isEmpty()) {
               if (index < column.path.length - 1) {
                 return [e[0], [node]];
@@ -87,7 +89,12 @@ export class TabulableNode {
                 return [e[0], node];
               }
             } else {
-              return [node.height, node.item[key]];
+              var height = node.height;
+              if (idx == e[1].length - 1) {
+                var sumHeight = e[1].reduce(function(acc, val, idx) {if (idx < e[1].length - 1) {return acc + val.height;} else {return acc;}}, 0);
+                height = e[0] - sumHeight;
+              }
+              return [height, node.item[key]];
             }
           }));
           columnRows = [].concat(...columnRows);
