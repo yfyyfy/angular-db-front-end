@@ -28,26 +28,38 @@ export class HeroDB {
     }
   }
 
-  public get(id: number): Hero {
+  private getBySelect(selectStatement: string): Hero[] {
     try {
       this.db.run('BEGIN TRANSACTION;');
-      var selectStatement_h = `SELECT * FROM hero where id = ${id};`
-      var results_h: SQL.QueryResults[] = this.db.exec(selectStatement_h);
-      var languages = this.selectIn('hero_language', 'hero_id', [id], ['hero_id', true], ['id', true]);
+      var results: SQL.QueryResults[] = this.db.exec(selectStatement);
+      var ret: Hero[] = this.queryResults2objArray(Hero, results[0]);
+
+      var ids = ret.map(e => e.id);
+      var languages = this.selectIn('hero_language', 'hero_id', ids, ['hero_id', true], ['id', true]);
+
       this.db.run('COMMIT;');
     } catch (e) {
       this.db.run('ROLLBACK;');
+      console.warn(e);
+      return [];
     }
-    var heroes: Hero[] = this.queryResults2objArray(Hero, results_h[0]);
     var languagesObj = this.queryResults2objArray(Language, languages[0]);
 
-    if (heroes.length != 1) {
+    if (! this.appendChildren(ret, languagesObj, 'id', 'hero_id', 'languages')) {
+      return [];
+    }
+
+    return ret;
+  }
+
+  public get(id: number): Hero {
+    var selectStatement = `SELECT * FROM hero where id = ${id};`
+    var ret = this.getBySelect(selectStatement);
+    if (ret.length != 1) {
       console.warn('heroes.length != 1');
     }
 
-    heroes[0].languages = languagesObj;
-
-    return heroes[0];
+    return ret[0];
   }
 
   public getMulti(query?: Query): Hero[] {
@@ -88,27 +100,7 @@ export class HeroDB {
 
     selectStatement += ' ORDER BY id;'
 
-    try {
-      this.db.run('BEGIN TRANSACTION;');
-      var results: SQL.QueryResults[] = this.db.exec(selectStatement);
-      var ret = this.queryResults2objArray(Hero, results[0]);
-
-      var ids = ret.map(e => e.id);
-      var languages = this.selectIn('hero_language', 'hero_id', ids, ['hero_id', true], ['id', true]);
-      this.db.run('COMMIT;');
-
-      var languagesObj = this.queryResults2objArray(Language, languages[0]);
-
-      if (! this.appendChildren(ret, languagesObj, 'id', 'hero_id', 'languages')) {
-        return [];
-      }
-
-      return ret;
-    } catch (e) {
-      this.db.run('ROLLBACK;');
-      console.warn(e);
-    }
-    return [];
+    return this.getBySelect(selectStatement);
   }
 
   public insert(hero?: Hero): boolean {
