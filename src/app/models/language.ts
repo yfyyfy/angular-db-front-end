@@ -18,9 +18,9 @@ export class Language extends Tabulable {
     this.name = name;
   }
 
-  tabulate(): TabulableNode {
-    var obj = {'name': new TabulableNode(this.name)};
-
-    return new TabulableNode(obj);
+  childNodes(): {[s: string]: TabulableNode | TabulableNode[]} {
+    return {
+      'name': new TabulableNode(this.name),
+    };
   }
 }

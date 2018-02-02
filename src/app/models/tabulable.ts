@@ -134,8 +134,12 @@ export class TabulableNode {
 
 export class Tabulable {
   // Override this.
+  childNodes(): {[s: string]: TabulableNode | TabulableNode[]} {
+    return null;
+  }
+
   tabulate(): TabulableNode {
-    return TabulableNode.emptyNode();
+    return new TabulableNode(this.childNodes());
   }
 
   static calculatePosition(tabulables: Tabulable[]): TabulableNode[] {

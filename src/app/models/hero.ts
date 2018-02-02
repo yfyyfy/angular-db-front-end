@@ -25,14 +25,13 @@ export class Hero extends Tabulable{
     this.activeDuty = activeDuty;
   }
 
-  tabulate(): TabulableNode {
-    var obj = {'id': new TabulableNode(this.id).setRouterLink(`/detail/view/${this.id}`),
-               'name': new TabulableNode(this.name),
-               'country': new TabulableNode(this.country),
-               'activeDuty': new TabulableNode(this.activeDuty ? 'active' : 'retired'),
-               'languages': this.languages.map(e => e.tabulate()),
-              };
-
-    return new TabulableNode(obj);
+  childNodes(): {[s: string]: TabulableNode | TabulableNode[]} {
+    return {
+      'id': new TabulableNode(this.id).setRouterLink(`/detail/view/${this.id}`),
+      'name': new TabulableNode(this.name),
+      'country': new TabulableNode(this.country),
+      'activeDuty': new TabulableNode(this.activeDuty ? 'active' : 'retired'),
+      'languages': this.languages.map(e => e.tabulate()),
+    };
   }
 }
