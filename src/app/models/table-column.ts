@@ -1,5 +1,7 @@
 export class TableColumn {
   id?: string;
+  name?: string;
+  nameForVisibility?: string;
   path?: string[];
   width?: string;
   invisibleByDefault?: boolean;
@@ -8,6 +10,8 @@ export class TableColumn {
   constructor(obj: TableColumn = {} as TableColumn) {
     let {
       id = '',
+      name = '',
+      nameForVisibility = '',
       path = [],
       width = null,
       invisibleByDefault = false,
@@ -15,6 +19,8 @@ export class TableColumn {
     } = obj;
 
     this.id = id;
+    this.name = name;
+    this.nameForVisibility = nameForVisibility;
     this.path = path;
     this.width = width;
     this.invisibleByDefault = invisibleByDefault;

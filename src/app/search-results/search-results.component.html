@@ -7,7 +7,7 @@
     <ng-container *ngIf="icolumn % 4 == 0">
       <div class="row">
         <ng-container *ngFor="let d of range(4)">
-          <div *ngIf="icolumn + d < togglableColumnIndices.length" class="col-md-3"><label><input type="checkbox" [(ngModel)]="columnVisible[togglableColumnIndices[icolumn + d]]">{{columnIds[togglableColumnIndices[icolumn + d]]}}</label></div>
+          <div *ngIf="icolumn + d < togglableColumnIndices.length" class="col-md-3"><label><input type="checkbox" [(ngModel)]="columnVisible[togglableColumnIndices[icolumn + d]]">{{columnNamesForVisibility[togglableColumnIndices[icolumn + d]]}}</label></div>
         </ng-container>
       </div>
     </ng-container>
@@ -27,7 +27,7 @@
         <tr>
           <ng-container *ngFor="let icolumn of range(columnIds.length)">
             <th [ngClass]="{'hide': columnVisible[icolumn] === false}" [attr.width]="columnWidths[icolumn]">
-              {{columnIds[icolumn]}}<br><span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span>
+              {{columnNames[icolumn]}}<br><span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span>
             </th>
           </ng-container>
         </tr>

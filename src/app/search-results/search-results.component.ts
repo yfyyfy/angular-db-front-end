@@ -22,6 +22,8 @@ export class SearchResultsComponent implements OnInit {
   tableHorizontalScrollable: boolean;
   columnVisible: boolean[];
   columnIds: string[];
+  columnNames: string[];
+  columnNamesForVisibility: string[];
   columnWidths: string[];
   togglableColumnIndices: number[];
   linkColumnId: string; // The id of the column whose link is applied to the all cells in the same row.
@@ -72,6 +74,8 @@ export class SearchResultsComponent implements OnInit {
   setTableSettings(settings) {
     this.columnVisible             = settings.tableColumns.map(e => ! e.invisibleByDefault);
     this.columnIds                 = settings.tableColumns.map(e => e.id);
+    this.columnNames               = settings.tableColumns.map(e => e.name || e.id);
+    this.columnNamesForVisibility  = settings.tableColumns.map(e => e.nameForVisibility || e.name || e.id);
     this.columnWidths              = settings.tableColumns.map(e => e.width);
     this.togglableColumnIndices    = settings.tableColumns.map((e, i) => e.fixed ? null : i).filter(e => e != null);
 
