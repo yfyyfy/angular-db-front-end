@@ -26,19 +26,8 @@ export class SearchFormComponent {
 
   constructor(private heroService: HeroService,
               private queryService: QueryService) {
-    heroService.getColumnValues('country').subscribe(columnValues => this.countries = columnValues.map(elt => <any>{'country': elt}));
-    this.countriesSettings = {
-      keyToSelect: 'country',
-      lableToDisplay: 'country',
-      isSimpleArray: false
-    };
-
-    heroService.getColumnValues('language').subscribe(columnValues => this.languages = columnValues.map(elt => <any>{'language': elt}));
-    this.languagesSettings = {
-      keyToSelect: 'language',
-      lableToDisplay: 'language',
-      isSimpleArray: false
-    };
+    this.setMultiSelect(heroService, 'country', 'countries', 'countriesSettings');
+    this.setMultiSelect(heroService, 'language', 'languages', 'languagesSettings');
   }
 
   onSubmit() {
@@ -51,6 +40,21 @@ export class SearchFormComponent {
     // reset() sets all model's properties connected to searchForm to null
     // including Object properties.
     this.model = new Query({name: '', country: []});
+  }
+
+  setSelect(service: HeroService, queryProperty: string, selectList: string): void {
+    var tableColumn = Query.getTableColumn(queryProperty);
+    service.getTableColumnValues(tableColumn[0], tableColumn[1]).subscribe(columnValues => this[selectList] = ['', ...columnValues.filter(elt => elt !== '')]);
+  }
+
+  setMultiSelect(service: HeroService, queryProperty: string, selectList: string, multiSelectSettings: string): void {
+    var tableColumn = Query.getTableColumn(queryProperty);
+    service.getTableColumnValues(tableColumn[0], tableColumn[1]).subscribe(columnValues => this[selectList] = columnValues.filter(elt => elt !== '').map(elt => <any>{[tableColumn[1]]: elt}));
+    this[multiSelectSettings] = {
+      keyToSelect: tableColumn[1],
+      lableToDisplay: tableColumn[1],
+      isSimpleArray: false
+    };
   }
 
   // Todo: for debug.

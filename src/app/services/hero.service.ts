@@ -43,6 +43,11 @@ export class HeroService {
     return of(this.heroDB.delete(hero));
   }
 
+  public getTableColumnValues(table: string, column: string): Observable<any[]> {
+    this.messageService.add(`HeroService: fetched table name=${table} and column name=${column}`);
+    return of(this.heroDB.getTableColumnValues(table, column));
+  }
+
   public getColumnValues(column: string): Observable<any[]> {
     this.messageService.add(`HeroService: fetched column name=${column}`);
     return of(this.heroDB.getColumnValues(column));

@@ -5,6 +5,11 @@ export class Query {
   language?: string[];
   activeDuty?: boolean[];
 
+  static prop2tableColumn: {[key: string]: string[]} = {
+    country: ['hero', 'country'],
+    language: ['hero_language', 'name'],
+  }
+
   constructor(obj: Query = {} as Query) {
     let {
       id = 0,
@@ -20,4 +25,8 @@ export class Query {
     this.language = language;
     this.activeDuty = activeDuty;
  }
+
+  static getTableColumn(prop: string): string[] {
+    return this.prop2tableColumn[prop];
+  }
 }

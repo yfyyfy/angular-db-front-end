@@ -208,6 +208,13 @@ export class HeroDB {
     return true;
   }
 
+  public getTableColumnValues(table: string, column: string): any[] {
+    var selectStatement = `SELECT DISTINCT ${column} FROM ${table} ORDER BY ${column};`
+    var results: SQL.QueryResults[] = this.db.exec(selectStatement);
+
+    return results[0].values.map(elt => elt[0]);
+  }
+
   public getColumnValues(column: string): any[] {
     var table: string;
     if (column === 'country') {
@@ -217,10 +224,7 @@ export class HeroDB {
       table = 'hero_language';
     }
 
-    var selectStatement = `SELECT DISTINCT ${column} FROM ${table};`
-    var results: SQL.QueryResults[] = this.db.exec(selectStatement);
-
-    return results[0].values.map(elt => elt[0]);
+    return this.getTableColumnValues(table, column);
   }
 
   private insertToTable(table: string, keyValues: {}[]): void {
