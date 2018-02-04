@@ -7,7 +7,7 @@
     <ng-container *ngIf="icolumn % 4 == 0">
       <div class="row">
         <ng-container *ngFor="let d of range(4)">
-          <div *ngIf="icolumn + d < togglableColumnIndices.length" class="col-md-3"><label><input type="checkbox" [(ngModel)]="columnVisible[togglableColumnIndices[icolumn + d]]">{{columnNames[togglableColumnIndices[icolumn + d]]}}</label></div>
+          <div *ngIf="icolumn + d < togglableColumnIndices.length" class="col-md-3"><label><input type="checkbox" [(ngModel)]="columnVisible[togglableColumnIndices[icolumn + d]]">{{columnIds[togglableColumnIndices[icolumn + d]]}}</label></div>
         </ng-container>
       </div>
     </ng-container>
@@ -25,29 +25,29 @@
     <table class="table" [style.table-layout]="tableHorizontalScrollable ? 'fixed' : null" [style.width]="tableWidth">
       <thead>
         <tr>
-          <ng-container *ngFor="let icolumn of range(columnNames.length)">
+          <ng-container *ngFor="let icolumn of range(columnIds.length)">
             <th [ngClass]="{'hide': columnVisible[icolumn] === false}" [attr.width]="columnWidths[icolumn]">
-              {{columnNames[icolumn]}}<br><span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span>
+              {{columnIds[icolumn]}}<br><span class="glyphicon glyphicon-remove pull-right" (click)="hideColumn($event)"></span>
             </th>
           </ng-container>
         </tr>
       </thead>
       <tbody>
         <ng-container>
-          <tr *ngFor="let irow of range(tableContents[columnNames[0]].length)">
-            <ng-container *ngFor="let icolumn of range(columnNames.length)">
-              <td *ngIf="tableContents[columnNames[icolumn]][irow].rowspan > 0"
+          <tr *ngFor="let irow of range(tableContents[columnIds[0]].length)">
+            <ng-container *ngFor="let icolumn of range(columnIds.length)">
+              <td *ngIf="tableContents[columnIds[icolumn]][irow].rowspan > 0"
                   [ngClass]="{'hide': columnVisible[icolumn] === false}"
                   onclick="this.getElementsByTagName('a')[0].click();"
-                  rowSpan="{{tableContents[columnNames[icolumn]][irow].rowspan}}">
-                <ng-container *ngIf="tableContents[columnNames[icolumn]][irow].href != null || tableContents[columnNames[icolumn]][irow].routerLink != null then c8 else c9"></ng-container>
+                  rowSpan="{{tableContents[columnIds[icolumn]][irow].rowspan}}">
+                <ng-container *ngIf="tableContents[columnIds[icolumn]][irow].href != null || tableContents[columnIds[icolumn]][irow].routerLink != null then c8 else c9"></ng-container>
                 <ng-template #c8>
-                  <a *ngIf="tableContents[columnNames[icolumn]][irow].href != null"       href="{{tableContents[columnNames[icolumn]][irow].href}}" target="_blank">{{tableContents[columnNames[icolumn]][irow].item | emptyString}}</a>
-                  <a *ngIf="tableContents[columnNames[icolumn]][irow].href == null" routerLink="{{tableContents[columnNames[icolumn]][irow].routerLink}}"          >{{tableContents[columnNames[icolumn]][irow].item | emptyString}}</a>
+                  <a *ngIf="tableContents[columnIds[icolumn]][irow].href != null"       href="{{tableContents[columnIds[icolumn]][irow].href}}" target="_blank">{{tableContents[columnIds[icolumn]][irow].item | emptyString}}</a>
+                  <a *ngIf="tableContents[columnIds[icolumn]][irow].href == null" routerLink="{{tableContents[columnIds[icolumn]][irow].routerLink}}"          >{{tableContents[columnIds[icolumn]][irow].item | emptyString}}</a>
                 </ng-template>
                 <ng-template #c9>
-                  <a *ngIf="tableContents[linkColumnName      ][irow].href != null"       href="{{tableContents[linkColumnName      ][irow].href}}" target="_blank">{{tableContents[columnNames[icolumn]][irow].item | emptyString}}</a>
-                  <a *ngIf="tableContents[linkColumnName      ][irow].href == null" routerLink="{{tableContents[linkColumnName      ][irow].routerLink}}"          >{{tableContents[columnNames[icolumn]][irow].item | emptyString}}</a>
+                  <a *ngIf="tableContents[linkColumnId      ][irow].href != null"       href="{{tableContents[linkColumnId      ][irow].href}}" target="_blank">{{tableContents[columnIds[icolumn]][irow].item | emptyString}}</a>
+                  <a *ngIf="tableContents[linkColumnId      ][irow].href == null" routerLink="{{tableContents[linkColumnId      ][irow].routerLink}}"          >{{tableContents[columnIds[icolumn]][irow].item | emptyString}}</a>
                 </ng-template>
               </td>
             </ng-container>

@@ -1,16 +1,16 @@
 import { TableColumn } from 'app/models/table-column';
 
 var tableColumns: TableColumn[] = [
-  {name: 'ID',       path: ['id']},
-  {name: 'Name',     path: ['name']},
-  {name: 'Country',  path: ['country']},
-  {name: 'Status',   path: ['activeDuty']},
-  {name: 'Language', path: ['languages', 'name']}
+  {id: 'ID',       path: ['id']},
+  {id: 'Name',     path: ['name']},
+  {id: 'Country',  path: ['country']},
+  {id: 'Status',   path: ['activeDuty']},
+  {id: 'Language', path: ['languages', 'name']}
 ];
 
 export const SETTINGS = {
   tableColumns: tableColumns,
-  linkColumnName: 'ID',
+  linkColumnId: 'ID',
   tableWidth: null,
   tableHorizontalScrollable: false,
 };

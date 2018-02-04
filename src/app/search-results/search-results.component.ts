@@ -21,10 +21,10 @@ export class SearchResultsComponent implements OnInit {
   tableWidth: string;
   tableHorizontalScrollable: boolean;
   columnVisible: boolean[];
-  columnNames: string[];
+  columnIds: string[];
   columnWidths: string[];
   togglableColumnIndices: number[];
-  linkColumnName: string; // The name of the column whose link is applied to the all cells in the same row.
+  linkColumnId: string; // The id of the column whose link is applied to the all cells in the same row.
 
   private subscriber: Subscription;
 
@@ -71,11 +71,11 @@ export class SearchResultsComponent implements OnInit {
 
   setTableSettings(settings) {
     this.columnVisible             = settings.tableColumns.map(e => ! e.invisibleByDefault);
-    this.columnNames               = settings.tableColumns.map(e => e.name);
+    this.columnIds                 = settings.tableColumns.map(e => e.id);
     this.columnWidths              = settings.tableColumns.map(e => e.width);
     this.togglableColumnIndices    = settings.tableColumns.map((e, i) => e.fixed ? null : i).filter(e => e != null);
 
-    this.linkColumnName            = settings.linkColumnName;
+    this.linkColumnId              = settings.linkColumnId;
     this.tableWidth                = settings.tableWidth;
     this.tableHorizontalScrollable = settings.tableHorizontalScrollable;
   }

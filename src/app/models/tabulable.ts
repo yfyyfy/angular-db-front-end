@@ -108,9 +108,9 @@ export class TabulableNode {
       });
       // console.log(columnRows); // columnRows is TabulableNode[].
 
-      tableData[column.name] = <TabulableNode[]>[];
+      tableData[column.id] = <TabulableNode[]>[];
       columnRows.forEach(function(e: TabulableNode) {
-        tableData[column.name][e.position] = e;
+        tableData[column.id][e.position] = e;
       });
 
       // Populate with empty TabulableNode.
@@ -119,10 +119,10 @@ export class TabulableNode {
 
         var previousNode: TabulableNode;
         for (let idx = 0; idx < nrow; ++idx) {
-          if (tableData[column.name][idx] == null) {
-            tableData[column.name][idx] = new TabulableNode(previousNode.item).setHeight(0).setHref(previousNode.href).setRouterLink(previousNode.routerLink);
+          if (tableData[column.id][idx] == null) {
+            tableData[column.id][idx] = new TabulableNode(previousNode.item).setHeight(0).setHref(previousNode.href).setRouterLink(previousNode.routerLink);
           } else {
-            previousNode = tableData[column.name][idx];
+            previousNode = tableData[column.id][idx];
           }
         }
       }

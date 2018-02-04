@@ -1,5 +1,5 @@
 export class TableColumn {
-  name?: string;
+  id?: string;
   path?: string[];
   width?: string;
   invisibleByDefault?: boolean;
@@ -7,14 +7,14 @@ export class TableColumn {
 
   constructor(obj: TableColumn = {} as TableColumn) {
     let {
-      name = '',
+      id = '',
       path = [],
       width = null,
       invisibleByDefault = false,
       fixed = false,
     } = obj;
 
-    this.name = name;
+    this.id = id;
     this.path = path;
     this.width = width;
     this.invisibleByDefault = invisibleByDefault;
