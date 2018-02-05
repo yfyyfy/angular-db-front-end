@@ -248,14 +248,22 @@ export class HeroDB {
   }
 
   // orderbys = [[columnName, isASC], ...]
-  private selectIn(table: string, column: string, values: any[], ...orderbys: [string, boolean][]) {
+  private selectIn(table: string, column: string, values: any[], ...rest: (string | [string, boolean])[]) {
+    var orderbys: [string, boolean][] = <[string, boolean][]> (rest.filter(Array.isArray));
+    var wheres: string[] = <string[]> (rest.filter(elt => ! Array.isArray(elt)));
+
     var orderby = orderbys.map(e => `${e[0]} ${e[1] ? 'ASC' : 'DESC'}`).join(',');
     if (orderby.length > 0) {
       orderby = 'ORDER BY ' + orderby;
     }
 
-    var inStr = values.map(e => (typeof e === 'string' || e instanceof String) ? JSON.stringify(e) : e).join(',');
-    var selectStatement = `SELECT * FROM ${table} WHERE ${column} IN (${inStr}) ${orderby};`;
+    var _wheres: string[] = wheres.slice();
+    {
+      var inStr = values.map(e => (typeof e === 'string' || e instanceof String) ? JSON.stringify(e) : e).join(',');
+      _wheres.push(`${column} IN (${inStr})`);
+    }
+
+    var selectStatement = `SELECT * FROM ${table} WHERE ${_wheres.join(" AND ")} ${orderby};`;
 
     return this.db.exec(selectStatement);
   }
