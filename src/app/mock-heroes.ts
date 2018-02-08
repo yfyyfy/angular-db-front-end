@@ -228,6 +228,13 @@ export class HeroDB {
   }
 
   private insertToTable(table: string, keyValues: {}[]): void {
+    var LENGTH = 10;
+    for (let idx = 0; idx < keyValues.length; idx += LENGTH) {
+      this.insertToTableAtOnce(table, keyValues.slice(idx, idx + LENGTH));
+    }
+  }
+
+  private insertToTableAtOnce(table: string, keyValues: {}[]): void {
     if (keyValues.length === 0) {return;}
 
     var columnsArray = keyValues.map(e => Object.keys(e));
