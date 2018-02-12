@@ -16,6 +16,7 @@ import { MultiInputOneditComponent } from 'app/shared/multi-input-onedit/multi-i
 import { MessagesComponent }         from 'app/messages/messages.component';
 import { SearchComponent }           from 'app/search/search.component';
 
+import { BoolStringPipe }            from 'app/shared/pipes/bool-string.pipe';
 import { EmptyStringPipe }           from 'app/shared/pipes/empty-string.pipe';
 
 import { HeroService }               from 'app/services/hero.service';
@@ -46,6 +47,7 @@ import { CustomReuseStrategy } from 'app/shared/custom-reuse-strategy';
     SearchComponent,
     SearchFormComponent,
     SearchResultsComponent,
+    BoolStringPipe,
     EmptyStringPipe
   ],
   providers: [
