@@ -1,4 +1,10 @@
 <h2>Search results</h2><span class="setting-icon glyphicon glyphicon-cog" (click)="toggleConfigVisibility()"></span>
+<ng-container *ngIf="heroes.length > 1">
+  <span>{{heroes.length}} results</span>
+</ng-container>
+<ng-container *ngIf="heroes.length == 1">
+  <span>1 result</span>
+</ng-container>
 <div class="panel panel-default" [hidden]="!configVisible">
   <div class="panel-heading">
     <h3 class="panel-title">Column visibility setting</h3><span class="glyphicon glyphicon-remove pull-right" (click)="toggleConfigVisibility()"></span>
