@@ -3,6 +3,7 @@ import { RouteReuseStrategy, DefaultUrlSerializer, ActivatedRouteSnapshot, Detac
 export class CustomReuseStrategy implements RouteReuseStrategy {
 
   handlers: {[key: string]: DetachedRouteHandle} = {};
+  scrollPositions: {[key: string]: number} = {};
 
   calcKey(route: ActivatedRouteSnapshot) {
     let next = route;
@@ -19,6 +20,10 @@ export class CustomReuseStrategy implements RouteReuseStrategy {
 
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
     // console.debug('CustomReuseStrategy:shouldDetach', route);
+    if ((route.data as any).shouldDetach) {
+      this.scrollPositions[this.calcKey(route)] = document.documentElement.scrollTop;
+      // console.log('[SAVE] ' + this.calcKey(route) + ': ' + this.scrollPositions[this.calcKey(route)]);
+    }
     return route.data && (route.data as any).shouldDetach;
   }
 
@@ -29,6 +34,16 @@ export class CustomReuseStrategy implements RouteReuseStrategy {
 
   shouldAttach(route: ActivatedRouteSnapshot): boolean {
     // console.debug('CustomReuseStrategy:shouldAttach', route);
+    setTimeout(() => {
+      if (this.scrollPositions[this.calcKey(route)] != null) {
+        document.documentElement.scrollTop = this.scrollPositions[this.calcKey(route)];
+        // console.log('[LOAD] ' + this.calcKey(route) + ': ' + this.scrollPositions[this.calcKey(route)]);
+      } else {
+        document.documentElement.scrollTop = 0;
+        // console.log('[INIT] ' + this.calcKey(route) + ': ' + 0);
+      }
+    });
+
     return !!route.routeConfig && !!this.handlers[this.calcKey(route)];
   }
 
