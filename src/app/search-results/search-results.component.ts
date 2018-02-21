@@ -9,6 +9,8 @@ import { HeroService } from 'app/services/hero.service';
 import { QueryService } from 'app/services/query.service';
 import { SETTINGS } from './search-results.component.settings';
 
+import * as FileSaver from 'file-saver';
+
 @Component({
   selector: 'app-search-results',
   templateUrl: './search-results.component.html',
@@ -86,5 +88,19 @@ export class SearchResultsComponent implements OnInit {
 
   range(n:number): number[] {
     return Array.from(Array(n).keys());
+  }
+
+  downloadResult(): void {
+    let data = 'a,b,c';
+    let filename = 'result.csv';
+    this.downloadCsv(data, filename)
+  }
+
+  downloadCsv(contents: any, filename: string): void {
+    let BOM = '\uFEFF';
+    let blob = new Blob([BOM + contents], {
+      type: 'ext/csv;charset=utf-8',
+    });
+    FileSaver.saveAs(blob, filename);
   }
 }
