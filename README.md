@@ -10,6 +10,20 @@
     npm install --save ng2-multiselect
     npm install --save @ngui/auto-complete
 
+## For this branch
+    set PATH=%PATH%;C:\Users\someone\Downloads\node\node\
+    set PATH=%PATH%;node_modules\.bin\
+    npm install
+
+    # https://qiita.com/homahi/items/e27b3b90c30b3698671f
+    npm uninstall @angular-cli
+    npm cache verify
+    npm install @angular/cli@latest
+
+    # https://stackoverflow.com/questions/40240796/angular-2-best-approach-to-use-filesaver-js
+    npm install file-saver --save
+    npm install @types/file-saver --save
+
 ## Start server (and open in a browser)
     ng serve --open
 
