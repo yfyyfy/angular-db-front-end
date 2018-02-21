@@ -9,6 +9,14 @@
     # npm install --save ng2-dropdown-multiselect # not working
     npm install --save ng2-multiselect
     npm install --save @ngui/auto-complete
+    npm install file-saver --save
+    npm install @types/file-saver --save
+
+## Update angular-cli to avoid "Cannot find module '@angular-devkit/core'" error.
+    # https://qiita.com/homahi/items/e27b3b90c30b3698671f
+    npm uninstall @angular-cli
+    npm cache verify
+    npm install @angular/cli@latest
 
 ## Start server (and open in a browser)
     ng serve --open
