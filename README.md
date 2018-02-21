@@ -5,7 +5,7 @@
 
 ## Additional configuration
     npm install --save @types/sql.js
-    curl -O https://raw.githubusercontent.com/kripken/sql.js/master/js/sql.js
+    curl -O https://raw.githubusercontent.com/kripken/sql.js/master/js/sql.js # Removed later
     # npm install --save ng2-dropdown-multiselect # not working
     npm install --save ng2-multiselect
     npm install --save @ngui/auto-complete
@@ -13,6 +13,7 @@
     npm install @types/file-saver --save
     npm install csv-stringify --save
     npm install @types/csv-stringify --save
+    npm install sql.js --save
 
 ## Update angular-cli to avoid "Cannot find module '@angular-devkit/core'" error.
     # https://qiita.com/homahi/items/e27b3b90c30b3698671f

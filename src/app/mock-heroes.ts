@@ -2,7 +2,7 @@ import { Hero } from 'app/models/hero';
 import { Language } from 'app/models/language';
 import { Query } from 'app/models/query';
 
-import * as SQL from 'ext/sql.js';
+import * as SQL from 'sql.js';
 
 export class HeroDB {
   db: SQL.Database;
