@@ -9,6 +9,9 @@ import { HeroService } from 'app/services/hero.service';
 import { QueryService } from 'app/services/query.service';
 import { SETTINGS } from './search-results.component.settings';
 
+import * as FileSaver from 'file-saver';
+import * as stringify from 'csv-stringify';
+
 @Component({
   selector: 'app-search-results',
   templateUrl: './search-results.component.html',
@@ -86,5 +89,38 @@ export class SearchResultsComponent implements OnInit {
 
   range(n:number): number[] {
     return Array.from(Array(n).keys());
+  }
+
+  downloadResult(): void {
+    let transposedTable: (boolean | number | string)[][] = [];
+    for (let columnId of this.columnIds) {
+      transposedTable.push([columnId, ...this.tableContents[columnId].map(e => <boolean | number | string>e.item)]);
+    }
+
+    let table: (boolean | number | string)[][] = [];
+    for (let irow in transposedTable) {
+      for (let icol in transposedTable[irow]) {
+        if (table[icol] == null) {
+          table[icol] = [];
+        }
+        table[icol][irow] = transposedTable[irow][icol];
+        if (table[icol][irow] == null) {
+          table[icol][irow] = '';
+        }
+      }
+    }
+
+    let filename = 'result.csv';
+    this.downloadCsv(table, filename)
+  }
+
+  downloadCsv(table: (boolean | number | string)[][], filename: string): void {
+    stringify(table, function(err: Error | undefined, csvStr: string) {
+      let BOM = '\uFEFF';
+      let blob = new Blob([BOM + csvStr], {
+        type: 'ext/csv;charset=utf-8',
+      });
+      FileSaver.saveAs(blob, filename);
+    });
   }
 }

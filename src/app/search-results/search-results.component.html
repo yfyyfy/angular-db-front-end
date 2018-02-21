@@ -1,4 +1,6 @@
-<h2>Search results</h2><span class="setting-icon glyphicon glyphicon-cog" (click)="toggleConfigVisibility()"></span>
+<h2>Search results</h2>
+<span class="setting-icon glyphicon glyphicon-cog" (click)="toggleConfigVisibility()"></span>
+<span class="setting-icon glyphicon glyphicon-download-alt" (click)="downloadResult()"></span>
 <ng-container *ngIf="heroes.length > 1">
   <span>{{heroes.length}} results</span>
 </ng-container>
