@@ -24,6 +24,8 @@
     npm install file-saver --save
     npm install @types/file-saver --save
 
+    npm install sql.js --save
+
 ## Start server (and open in a browser)
     ng serve --open
 
