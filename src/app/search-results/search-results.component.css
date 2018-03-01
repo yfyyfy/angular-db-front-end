@@ -4,9 +4,12 @@ h2, h3 {
   display: inline-block;
 }
 
-span.setting-icon {
+span.separate {
   padding-left: 0.5em;
-  padding-right: 0.5em;
+}
+
+span.separate + * {
+  padding-left: 0.5em;
 }
 
 .panel-default .panel-heading .glyphicon {
@@ -38,6 +41,10 @@ td a[ng-reflect-router-link] {
   text-decoration: none;
 }
 
-span.glyphicon-remove {
+span.glyphicon {
   cursor: pointer;
+}
+
+span.glyphicon:hover {
+  color: #555;
 }
