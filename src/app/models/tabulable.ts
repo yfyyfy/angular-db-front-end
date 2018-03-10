@@ -73,28 +73,38 @@ export class TabulableNode {
     // console.log(JSON.stringify(nodes));
 
     var tableData = {}; // tableData's keys are column names. tableData[key][idx] is idx-th row's data of the key.
-    columns.forEach(function(column) {
+    columns.forEach(function(column: TableColumn) {
       var columnRows;
-      column.path.forEach(function(key, index) {
+      column.path.forEach(function(key: string, index: number) {
         if (index == 0) {
-          columnRows = nodes.map((node: TabulableNode) => [node.height, node.item[key]]);
+          if (index < column.path.length - 1) {
+            columnRows = nodes.map((node: TabulableNode) => new ColumnCellAggregate(node.item[key], node.height));
+          } else {
+            columnRows = nodes.map((node: TabulableNode) => new ColumnCell(node.item[key], node.height));
+          }
         } else {
-          columnRows = columnRows.map(e => e[1].map(function(node: TabulableNode, idx: number) {
-            // console.log(e[0] + " " + e[1].length + " " + idx + " " + node.position);
+          columnRows = columnRows.map((e: ColumnCellAggregate) => e.node.map(function(node: TabulableNode, idx: number): ColumnCell | ColumnCellAggregate {
+            // console.log(e.height + " " + e.node.length + " " + idx + " " + node.position);
 
             if (node.isEmpty()) {
               if (index < column.path.length - 1) {
-                return [e[0], [node]];
+                return new ColumnCellAggregate([node], e.height);
               } else {
-                return [e[0], node];
+                return new ColumnCell(node, e.height);
               }
             } else {
               var height = node.height;
-              if (idx == e[1].length - 1) {
-                var sumHeight = e[1].reduce(function(acc, val, idx) {if (idx < e[1].length - 1) {return acc + val.height;} else {return acc;}}, 0);
-                height = e[0] - sumHeight;
+              if (idx == e.node.length - 1) {
+                var sumHeight = e.node.reduce(function(acc: number, val: TabulableNode, idx: number): number {if (idx < e.node.length - 1) {return acc + val.height;} else {return acc;}}, 0);
+
+                height = e.height - sumHeight;
               }
-              return [height, node.item[key]];
+
+              if (index < column.path.length - 1) {
+                return new ColumnCellAggregate(node.item[key], height);
+              } else {
+                return new ColumnCell(node.item[key], height);
+              }
             }
           }));
           columnRows = [].concat(...columnRows);
@@ -102,9 +112,9 @@ export class TabulableNode {
       });
 
       // Set TabulableNode.rowspan.
-      columnRows = columnRows.map(function(e: [number, TabulableNode]) {
-        e[1].rowspan = e[0];
-        return e[1];
+      columnRows = columnRows.map(function(e: ColumnCell): TabulableNode {
+        e.node.rowspan = e.height;
+        return e.node;
       });
       // console.log(columnRows); // columnRows is TabulableNode[].
 
@@ -179,5 +189,25 @@ export class Tabulable {
       } else { // node.item[key] is primitive.
       }
     }
+  }
+}
+
+class ColumnCell {
+  node: TabulableNode;
+  height: number;
+
+  constructor(node: TabulableNode, height: number) {
+    this.node = node;
+    this.height = height;
+  }
+}
+
+class ColumnCellAggregate {
+  node: TabulableNode[];
+  height: number;
+
+  constructor(node: TabulableNode[], height: number) {
+    this.node = node;
+    this.height = height;
   }
 }
