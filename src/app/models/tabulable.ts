@@ -74,30 +74,31 @@ export class TabulableNode {
 
     var tableData = {}; // tableData's keys are column names. tableData[key][idx] is idx-th row's data of the key.
     columns.forEach(function(column: TableColumn) {
-      var columnRows;
+      var columnCells: (ColumnCell | ColumnCellAggregate)[];
       column.path.forEach(function(key: string, index: number) {
         if (index == 0) {
           if (index < column.path.length - 1) {
-            columnRows = nodes.map((node: TabulableNode) => new ColumnCellAggregate(node.item[key], node.height));
+            columnCells = nodes.map((node: TabulableNode) => new ColumnCellAggregate(node.item[key], node.height));
           } else {
-            columnRows = nodes.map((node: TabulableNode) => new ColumnCell(node.item[key], node.height));
+            columnCells = nodes.map((node: TabulableNode) => new ColumnCell(node.item[key], node.height));
           }
         } else {
-          columnRows = columnRows.map((e: ColumnCellAggregate) => e.node.map(function(node: TabulableNode, idx: number): ColumnCell | ColumnCellAggregate {
-            // console.log(e.height + " " + e.node.length + " " + idx + " " + node.position);
+          var columnCellsArray: (ColumnCell | ColumnCellAggregate)[][];
+          columnCellsArray = columnCells.map((cca: ColumnCellAggregate) => cca.node.map(function(node: TabulableNode, idx: number): ColumnCell | ColumnCellAggregate {
+            // console.log(cca.height + " " + cca.node.length + " " + idx + " " + node.position);
 
             if (node.isEmpty()) {
               if (index < column.path.length - 1) {
-                return new ColumnCellAggregate([node], e.height);
+                return new ColumnCellAggregate([node], cca.height);
               } else {
-                return new ColumnCell(node, e.height);
+                return new ColumnCell(node, cca.height);
               }
             } else {
               var height = node.height;
-              if (idx == e.node.length - 1) {
-                var sumHeight = e.node.reduce(function(acc: number, val: TabulableNode, idx: number): number {if (idx < e.node.length - 1) {return acc + val.height;} else {return acc;}}, 0);
+              if (idx == cca.node.length - 1) {
+                var sumHeight = cca.node.reduce(function(acc: number, val: TabulableNode, idx: number): number {if (idx < cca.node.length - 1) {return acc + val.height;} else {return acc;}}, 0);
 
-                height = e.height - sumHeight;
+                height = cca.height - sumHeight;
               }
 
               if (index < column.path.length - 1) {
@@ -107,14 +108,14 @@ export class TabulableNode {
               }
             }
           }));
-          columnRows = [].concat(...columnRows);
+          columnCells = [].concat(...columnCellsArray);
         }
       });
 
       // Set TabulableNode.rowspan.
-      columnRows = columnRows.map(function(e: ColumnCell): TabulableNode {
-        e.node.rowspan = e.height;
-        return e.node;
+      var columnRows: TabulableNode[] = columnCells.map(function(columnCell: ColumnCell): TabulableNode {
+        columnCell.node.rowspan = columnCell.height;
+        return columnCell.node;
       });
       // console.log(columnRows); // columnRows is TabulableNode[].
 
