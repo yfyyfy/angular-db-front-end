@@ -47,3 +47,16 @@ cf. https://github.com/angular/angular/issues/13948
 > and this in the index.html file
 > Removed base Href="/" tag from html and added it like this.
 > <script>document.write('<base href="' + document.location + '" />');</script>
+
+## Convert *.sqlite to Uint8Array javascript file.
+   od -v -tu1 -w1 -An test.sqlite | awk 'BEGIN{printf "export const uint8Array=[";} {printf "%d,", $1;} END{printf "];"}' > testdata.js
+
+## Dump to *.sqlite
+   in mock-heroes.ts:
+
+   import * as FileSaver from 'file-saver';
+
+   let uint8Array = this.db.export();
+   let blob = new Blob([uint8Array], {type: "application/octet-stream"});
+   let fileName = "test.sqlite";
+   FileSaver.saveAs(blob, fileName);

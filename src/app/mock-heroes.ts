@@ -3,11 +3,17 @@ import { Language } from 'app/models/language';
 import { Query } from 'app/models/query';
 
 import * as SQL from 'sql.js';
+// import {uint8Array} from 'app/testdata';
 
 export class HeroDB {
   db: SQL.Database;
 
   constructor(heroObjArray: {}[]) {
+    this.createDB();
+    // this.db = new SQL.Database(uint8Array);
+  }
+
+  private createDB() {
     this.db = new SQL.Database();
 
     // Create a table in memory.
