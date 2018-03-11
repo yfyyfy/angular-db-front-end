@@ -72,7 +72,7 @@ export class TabulableNode {
   static expand(nodes: TabulableNode[], columns: TableColumn[]): {[key: string]: TabulableNode[]} {
     // console.log(JSON.stringify(nodes));
 
-    var tableData = {}; // tableData's keys are column names. tableData[key][idx] is idx-th row's data of the key.
+    var tableData: {[key: string]: TabulableNode[]} = {}; // tableData[key][idx] is the value of idx-th row's 'key' column.
     columns.forEach(function(column: TableColumn) {
       var columnCells: (ColumnCell | ColumnCellAggregate)[];
       column.path.forEach(function(key: string, index: number) {
@@ -115,30 +115,33 @@ export class TabulableNode {
       });
 
       // Set TabulableNode.rowspan.
-      var columnRows: TabulableNode[] = columnCells.map(function(columnCell: ColumnCell): TabulableNode {
-        columnCell.node.rowspan = columnCell.height + columnCell.extraHeight;
-        return columnCell.node;
-      });
-      // console.log(columnRows); // columnRows is TabulableNode[].
-
-      tableData[column.id] = <TabulableNode[]>[];
-      columnRows.forEach(function(e: TabulableNode) {
-        tableData[column.id][e.position] = e;
+      columnCells.forEach(function(e: ColumnCell) {
+        e.node.rowspan = e.height + e.extraHeight;
       });
 
-      // Populate with empty TabulableNode.
+      // Indexing ColumnCell by position.
+      var tabulatedCells = <ColumnCell[]>[];
+      columnCells.forEach(function(e: ColumnCell) {
+        tabulatedCells[e.node.position] = e;
+      });
+
+      // Populate with empty ColumnCell.
       if (nodes.length > 0) {
         var nrow = nodes[nodes.length - 1].position + nodes[nodes.length - 1].height;
 
-        var previousNode: TabulableNode;
+        var previousCell: ColumnCell;
         for (let idx = 0; idx < nrow; ++idx) {
-          if (tableData[column.id][idx] == null) {
-            tableData[column.id][idx] = new TabulableNode(previousNode.item).setHeight(0).setHref(previousNode.href).setRouterLink(previousNode.routerLink);
+          if (tabulatedCells[idx] == null) {
+            let node = new TabulableNode(previousCell.node.item).setHeight(0).setHref(previousCell.node.href).setRouterLink(previousCell.node.routerLink);
+            tabulatedCells[idx] = new ColumnCell(node, 0, 0);
           } else {
-            previousNode = tableData[column.id][idx];
+            previousCell = tabulatedCells[idx];
           }
         }
       }
+
+      // Extract TabulableNodes for column.id.
+      tableData[column.id] = tabulatedCells.map(e => e.node);
     });
 
     return tableData;
