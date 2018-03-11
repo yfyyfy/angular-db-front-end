@@ -89,22 +89,24 @@ export class TabulableNode {
 
             if (node.isEmpty()) {
               if (index < column.path.length - 1) {
-                return new ColumnCellAggregate([node], cca.height);
+                return new ColumnCellAggregate([node], cca.height, cca.extraHeight);
               } else {
-                return new ColumnCell(node, cca.height);
+                return new ColumnCell(node, cca.height, cca.extraHeight);
               }
             } else {
               var height = node.height;
+              var extraHeight = 0;
+
               if (idx == cca.node.length - 1) {
                 var sumHeight = cca.node.reduce(function(acc: number, val: TabulableNode, idx: number): number {if (idx < cca.node.length - 1) {return acc + val.height;} else {return acc;}}, 0);
 
-                height = cca.height - sumHeight;
+                extraHeight = cca.height + cca.extraHeight - sumHeight - height;
               }
 
               if (index < column.path.length - 1) {
-                return new ColumnCellAggregate(node.item[key], height);
+                return new ColumnCellAggregate(node.item[key], height, extraHeight);
               } else {
-                return new ColumnCell(node.item[key], height);
+                return new ColumnCell(node.item[key], height, extraHeight);
               }
             }
           }));
@@ -114,7 +116,7 @@ export class TabulableNode {
 
       // Set TabulableNode.rowspan.
       var columnRows: TabulableNode[] = columnCells.map(function(columnCell: ColumnCell): TabulableNode {
-        columnCell.node.rowspan = columnCell.height;
+        columnCell.node.rowspan = columnCell.height + columnCell.extraHeight;
         return columnCell.node;
       });
       // console.log(columnRows); // columnRows is TabulableNode[].
@@ -196,19 +198,23 @@ export class Tabulable {
 class ColumnCell {
   node: TabulableNode;
   height: number;
+  extraHeight: number;
 
-  constructor(node: TabulableNode, height: number) {
+  constructor(node: TabulableNode, height: number, extraHeight?: number) {
     this.node = node;
     this.height = height;
+    this.extraHeight = (extraHeight == null) ? 0 : extraHeight;
   }
 }
 
 class ColumnCellAggregate {
   node: TabulableNode[];
   height: number;
+  extraHeight: number;
 
-  constructor(node: TabulableNode[], height: number) {
+  constructor(node: TabulableNode[], height: number, extraHeight?: number) {
     this.node = node;
     this.height = height;
+    this.extraHeight = (extraHeight == null) ? 0 : extraHeight;
   }
 }
