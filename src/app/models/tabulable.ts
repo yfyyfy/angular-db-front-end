@@ -125,14 +125,19 @@ export class TabulableNode {
         tabulatedCells[e.node.position] = e;
       });
 
-      // Populate with empty ColumnCell.
+      // Populate with ColumnCells with no height.
       if (nodes.length > 0) {
         var nrow = nodes[nodes.length - 1].position + nodes[nodes.length - 1].height;
 
         var previousCell: ColumnCell;
         for (let idx = 0; idx < nrow; ++idx) {
           if (tabulatedCells[idx] == null) {
-            let node = new TabulableNode(previousCell.node.item).setHeight(0).setHref(previousCell.node.href).setRouterLink(previousCell.node.routerLink);
+            let item = null;
+            if (idx < previousCell.node.position + previousCell.height) {
+              item = previousCell.node.item;
+            }
+
+            let node = new TabulableNode(item).setHeight(0).setHref(previousCell.node.href).setRouterLink(previousCell.node.routerLink);
             tabulatedCells[idx] = new ColumnCell(node, 0, 0);
           } else {
             previousCell = tabulatedCells[idx];
