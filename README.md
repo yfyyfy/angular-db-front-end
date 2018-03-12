@@ -11,6 +11,8 @@
     npm install --save @ngui/auto-complete
     npm install file-saver --save
     npm install @types/file-saver --save
+    npm install csv-stringify --save
+    npm install @types/csv-stringify --save
 
 ## Update angular-cli to avoid "Cannot find module '@angular-devkit/core'" error.
     # https://qiita.com/homahi/items/e27b3b90c30b3698671f
