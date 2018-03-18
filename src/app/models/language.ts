@@ -16,11 +16,9 @@ export class Language extends Tabulable {
     this.hero_id = hero_id;
     this.id = id;
     this.name = name;
-  }
 
-  childNodes(): {[s: string]: TabulableNode | TabulableNode[]} {
-    return {
-      'name': new TabulableNode(this.name),
-    };
+    this.childNodeFunctions = {
+      'name': () => new TabulableNode(this.name),
+    }
   }
 }

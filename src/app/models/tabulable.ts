@@ -155,8 +155,12 @@ export class TabulableNode {
 
 export class Tabulable {
   // Override this.
+  childNodeFunctions?: {[s: string]: () => TabulableNode | TabulableNode[]};
+
   childNodes(): {[s: string]: TabulableNode | TabulableNode[]} {
-    return null;
+    var ret = {};
+    Object.keys(this.childNodeFunctions).forEach(e => {ret[e] = this.childNodeFunctions[e]();});
+    return ret;
   }
 
   tabulate(): TabulableNode {
