@@ -155,20 +155,36 @@ export class TabulableNode {
 
 export class Tabulable {
   // Override this.
-  childNodeFunctions?: {[s: string]: () => TabulableNode | TabulableNode[]};
+  childNodeFunctions: {[s: string]: (arg?: TableColumn[]) => TabulableNode | TabulableNode[]};
 
-  childNodes(): {[s: string]: TabulableNode | TabulableNode[]} {
+  childNodes(columns?: TableColumn[]): {[s: string]: TabulableNode | TabulableNode[]} {
     var ret = {};
-    Object.keys(this.childNodeFunctions).forEach(e => {ret[e] = this.childNodeFunctions[e]();});
+    Object.keys(this.childNodeFunctions).forEach(e => {
+      if (columns == null) {
+        ret[e] = this.childNodeFunctions[e](columns);
+      } else {
+        let filteredColumns = columns.filter((column: TableColumn) => column.path[0] === e);
+        if (filteredColumns.length > 0) {
+          let arg: TableColumn[] = filteredColumns.map((column: TableColumn) => {
+            let newColumn = new TableColumn(column);
+            newColumn.path = column.path.slice(1);
+            return newColumn;
+          });
+          ret[e] = this.childNodeFunctions[e](arg);
+        // } else {
+        //   // @todo this node will not be displayed.
+        }
+      }
+    });
     return ret;
   }
 
-  tabulate(): TabulableNode {
-    return new TabulableNode(this.childNodes());
+  tabulate(columns?: TableColumn[]): TabulableNode {
+    return new TabulableNode(this.childNodes(columns));
   }
 
-  static calculatePosition(tabulables: Tabulable[]): TabulableNode[] {
-    var ret = tabulables.map(e => e.tabulate());
+  static calculatePosition(tabulables: Tabulable[], columns?: TableColumn[]): TabulableNode[] {
+    var ret = tabulables.map(e => e.tabulate(columns));
 
     var heightSum = 0;
     ret.forEach(function(node: TabulableNode) {

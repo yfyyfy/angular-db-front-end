@@ -29,7 +29,7 @@ export class Hero extends Tabulable{
       'name': () => new TabulableNode(this.name),
       'country': () => new TabulableNode(this.country),
       'activeDuty': () => new TabulableNode(this.activeDuty ? 'active' : 'retired'),
-      'languages': () => this.languages.map(e => e.tabulate()),
+      'languages': (arg) => this.languages.map(e => e.tabulate(arg)),
     };
   }
 }
