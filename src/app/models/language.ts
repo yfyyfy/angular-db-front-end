@@ -1,4 +1,5 @@
 import { Tabulable, TabulableNode } from './tabulable';
+import {Test} from './test';
 
 export class Language extends Tabulable {
   hero_id: number;
@@ -17,8 +18,14 @@ export class Language extends Tabulable {
     this.id = id;
     this.name = name;
 
+    // Dummy data
+    var _tests = [new Test(<any>{id: 1, name: 'test1'}), new Test(<any>{id: 2, name: 'test2'}), new Test(<any>{id: 3, name: 'test3'})];
+    var tests = _tests.map(e => e.tabulate());
+    if (this.hero_id == 11) {tests = [];}
+
     this.childNodeFunctions = {
       'name': () => new TabulableNode(this.name),
+      'test': () => tests, // Add dummy data.
     }
   }
 }

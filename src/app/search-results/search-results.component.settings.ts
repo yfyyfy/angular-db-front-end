@@ -5,7 +5,8 @@ var tableColumns: TableColumn[] = [
   {id: 'Name',     path: ['name']},
   {id: 'Country',  path: ['country']},
   {id: 'Status',   path: ['activeDuty']},
-  {id: 'Language', path: ['languages', 'name']}
+  {id: 'Language', path: ['languages', 'name']},
+  {id: 'Test',     path: ['languages', 'test', 'name']},
 ];
 
 export const SETTINGS = {
