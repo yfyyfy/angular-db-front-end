@@ -36,8 +36,8 @@ export class Language extends Tabulable {
 
     this.childNodeFunctions = {
       'name': () => new TabulableNode(this.name),
-//      'test': () => tests, // Add dummy data.
-//      'test2': () => tests2, // Add dummy data.
+      'test': () => tests, // Add dummy data.
+      'test2': () => tests2, // Add dummy data.
       'test3': () => tests3, // Add dummy data.
     }
   }
