@@ -16,8 +16,7 @@ import { MultiInputOneditComponent } from 'app/shared/multi-input-onedit/multi-i
 import { MessagesComponent }         from 'app/messages/messages.component';
 import { SearchComponent }           from 'app/search/search.component';
 
-import { BoolStringPipe }            from 'app/shared/pipes/bool-string.pipe';
-import { EmptyStringPipe }           from 'app/shared/pipes/empty-string.pipe';
+import { PipesModule }            from 'app/shared/pipes/pipes.module';
 
 import { HeroService }               from 'app/services/hero.service';
 import { MessageService }            from 'app/services/message.service';
@@ -34,7 +33,8 @@ import { CustomReuseStrategy } from 'app/shared/custom-reuse-strategy';
     FormsModule,
     MultiselectDropdownModule,
     NguiAutoCompleteModule,
-    AppRoutingModule
+    AppRoutingModule,
+    PipesModule
   ],
   declarations: [
     AppComponent,
@@ -47,8 +47,6 @@ import { CustomReuseStrategy } from 'app/shared/custom-reuse-strategy';
     SearchComponent,
     SearchFormComponent,
     SearchResultsComponent,
-    BoolStringPipe,
-    EmptyStringPipe
   ],
   providers: [
     HeroService,

@@ -7,6 +7,14 @@ import { EmptyStringPipe } from './empty-string.pipe';
   imports: [
     CommonModule
   ],
-  declarations: [BoolStringPipe, EmptyStringPipe]
+  declarations: [
+    BoolStringPipe,
+    EmptyStringPipe,
+  ],
+  exports: [
+    BoolStringPipe,
+    EmptyStringPipe,
+    CommonModule,
+  ]
 })
 export class PipesModule { }
