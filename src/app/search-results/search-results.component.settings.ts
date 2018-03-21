@@ -9,6 +9,7 @@ var tableColumns: TableColumn[] = [
 //  {id: 'Test',     path: ['languages', 'test', 'name']},
 //  {id: 'Test2',     path: ['languages', 'test2', 'name']},
   {id: 'Test3',     path: ['languages', 'test3', 'name']},
+  {id: 'Test4', path: ['test', 'name']},
 ];
 
 export const SETTINGS = {
