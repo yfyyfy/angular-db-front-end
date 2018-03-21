@@ -44,11 +44,15 @@ export class SearchResultsComponent implements OnInit {
     let parentNode = $event.target.parentNode;
     let parentTagName = parentNode.tagName;
     let parentSiblings = Array.prototype.filter.call(parentNode.parentNode.childNodes, elt => elt.tagName === parentTagName);
-    let index = Array.prototype.indexOf.call(parentSiblings, parentNode);
+    let indexInVisible = Array.prototype.indexOf.call(parentSiblings, parentNode);
+    let index = this.columnVisible.map((e, i) => <any>{value: e, index: i}).filter(e => e.value)[indexInVisible].index;
     this.columnVisible[index] = false;
+
+    this.setTableContents();
   }
 
   ngOnInit() {
+    this.setTableSettings(SETTINGS);
     this.subscriber = this.queryService.query$.subscribe(this.getHeroes.bind(this));
     this.getHeroes();
   }
@@ -63,13 +67,13 @@ export class SearchResultsComponent implements OnInit {
     var self = this;
     this.heroService.getMulti(query).subscribe(function(heroes) {
       self.heroes = heroes;
-      self.tableContents = self.getTableContents();
+      self.setTableContents();
     });
   }
 
-  getTableContents(): {[key: string]: TabulableNode[]} {
-    this.setTableSettings(SETTINGS);
-    return Tabulable.expand(this.heroes, SETTINGS.tableColumns);
+  setTableContents(): void {
+    let tableColumns = SETTINGS.tableColumns.filter((val, idx) => val.id === SETTINGS.linkColumnId || this.columnVisible[idx]);
+    this.tableContents = Tabulable.expand(this.heroes, tableColumns);
   }
 
   setTableSettings(settings) {
