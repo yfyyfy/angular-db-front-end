@@ -68,10 +68,8 @@ export class SearchResultsComponent implements OnInit {
   }
 
   getTableContents(): {[key: string]: TabulableNode[]} {
-    var nodes = Tabulable.calculatePosition(this.heroes, SETTINGS.tableColumns);
     this.setTableSettings(SETTINGS);
-
-    return TabulableNode.expand(nodes, SETTINGS.tableColumns);
+    return Tabulable.expand(this.heroes, SETTINGS.tableColumns);
   }
 
   setTableSettings(settings) {

@@ -183,6 +183,11 @@ export class Tabulable {
     return new TabulableNode(this.childNodes(columns));
   }
 
+  static expand(tabulables: Tabulable[], columns: TableColumn[]): {[key: string]: TabulableNode[]} {
+    var nodes: TabulableNode[] = Tabulable.calculatePosition(tabulables, columns);
+    return TabulableNode.expand(nodes, columns);
+  }
+
   static calculatePosition(tabulables: Tabulable[], columns?: TableColumn[]): TabulableNode[] {
     var ret = tabulables.map(e => e.tabulate(columns));
 
