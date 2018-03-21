@@ -51,9 +51,8 @@ export class HeroDB {
     }
     var languagesObj = this.queryResults2objArray(Language, languages[0]);
 
-    if (! this.appendChildren(ret, languagesObj, 'id', 'hero_id', 'languages')) {
-      return [];
-    }
+    var orphan = this.appendChildren(ret, languagesObj, 'id', 'hero_id', 'languages')
+    if (orphan != null) {console.log('Unexpected error in combining results.'); return [];}
 
     return ret;
   }
@@ -299,17 +298,29 @@ export class HeroDB {
 
   // Append child's element to parent's element under appendKey.
   // parentKey and childKey are used for matching the elements.
-  private appendChildren(parent: {}[], child: {}[], parentKey: string, childKey: string, appendKey: string): boolean {
+  private appendChildren(parent: {}[], child: {}[], parentKey: string, childKey: string, appendKey: string): {[key: string]: {}[]} {
     var parentMap: Map<any, number> = <Map<any, number>>(parent.reduce(function(acc: Map<any, number>, val: any, idx: number) {acc.set(val[parentKey], idx); return acc;}, new Map()));
 
+    var orphan: {[key: string]: {}[]} = {};
     child.forEach(function(e) {
-      var idx = parentMap.get(e[childKey]);
-      if (idx == null) {return false;}
+      var group = e[childKey];
 
-      parent[idx][appendKey].push(e);
+      var idx = parentMap.get(group);
+      if (idx == null) {
+        if (orphan[group] == null) {
+          orphan[group] = [];
+        }
+        orphan[group].push(e);
+      } else {
+        parent[idx][appendKey].push(e);
+      }
     });
 
-    return true;
+    if (Object.keys(orphan).length > 0) {
+      return orphan;
+    } else {
+      return null;
+    }
   }
 
   private extractFromQueryResult(results: SQL.QueryResults, key: string): any[] {
