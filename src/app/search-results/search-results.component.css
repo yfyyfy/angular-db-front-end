@@ -36,7 +36,7 @@ th.hide, tr.hide {
   display:none;
 }
 
-td a[ng-reflect-router-link] {
+td a.router-link {
   color: #888;
   text-decoration: none;
 }

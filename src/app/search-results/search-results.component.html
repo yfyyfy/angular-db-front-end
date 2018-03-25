@@ -50,11 +50,11 @@
                 <ng-container *ngIf="tableContents[columnIds[icolumn]][irow].href != null || tableContents[columnIds[icolumn]][irow].routerLink != null then c8 else c9"></ng-container>
                 <ng-template #c8>
                   <a *ngIf="tableContents[columnIds[icolumn]][irow].href != null"       href="{{tableContents[columnIds[icolumn]][irow].href}}" target="_blank">{{tableContents[columnIds[icolumn]][irow].item | emptyString}}</a>
-                  <a *ngIf="tableContents[columnIds[icolumn]][irow].href == null" routerLink="{{tableContents[columnIds[icolumn]][irow].routerLink}}"          >{{tableContents[columnIds[icolumn]][irow].item | emptyString}}</a>
+                  <a *ngIf="tableContents[columnIds[icolumn]][irow].href == null" routerLink="{{tableContents[columnIds[icolumn]][irow].routerLink}}" class="router-link">{{tableContents[columnIds[icolumn]][irow].item | emptyString}}</a>
                 </ng-template>
                 <ng-template #c9>
                   <a *ngIf="tableContents[linkColumnId      ][irow].href != null"       href="{{tableContents[linkColumnId      ][irow].href}}" target="_blank">{{tableContents[columnIds[icolumn]][irow].item | emptyString}}</a>
-                  <a *ngIf="tableContents[linkColumnId      ][irow].href == null" routerLink="{{tableContents[linkColumnId      ][irow].routerLink}}"          >{{tableContents[columnIds[icolumn]][irow].item | emptyString}}</a>
+                  <a *ngIf="tableContents[linkColumnId      ][irow].href == null" routerLink="{{tableContents[linkColumnId      ][irow].routerLink}}" class="router-link">{{tableContents[columnIds[icolumn]][irow].item | emptyString}}</a>
                 </ng-template>
               </td>
             </ng-container>
